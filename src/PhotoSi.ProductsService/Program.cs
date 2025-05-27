@@ -1,12 +1,30 @@
+using Microsoft.EntityFrameworkCore;
+using PhotoSi.ProductsService.Database;
+using PhotoSi.ProductsService.Middleware;
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<ProductsDbContext>(opt =>
+{
+    opt.UseInMemoryDatabase("ProductServiceDb");
+});
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ProductsDbContext>();
+    DatabaseSeeder.Seed(dbContext);
+}
+
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseAuthorization();
 
