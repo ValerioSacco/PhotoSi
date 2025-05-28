@@ -8,17 +8,22 @@ namespace PhotoSi.ProductsService.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasKey(p => p.Code);
+            builder.HasKey(p => p.Id);
+
             builder.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(100);
+
             builder.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(500);
 
+            builder.Property(p => p.Version)
+                .IsConcurrencyToken();
+
             builder.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
-                .HasForeignKey(p => p.CategoryCode)
+                .HasForeignKey(p => p.CategoryId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
