@@ -4,7 +4,7 @@ using PhotoSi.ProductsService.Models;
 
 namespace PhotoSi.ProductsService.Database.Configurations
 {
-    internal sealed class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {

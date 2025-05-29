@@ -12,6 +12,7 @@ namespace PhotoSi.ProductsService.Repositories
         Task<int> CountAsync(CancellationToken cancellationToken);
         bool Create(Product product);
         bool Update(Product product);
+        bool Delete(Product product);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
@@ -39,10 +40,9 @@ namespace PhotoSi.ProductsService.Repositories
             return product;
         }
 
-
-        public Task<List<Product>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        public async Task<List<Product>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
-            var products = _products
+            var products = await _products
                 .AsNoTracking()
                 .OrderBy(p => p.Id)
                 .Skip((pageNumber - 1) * pageSize)
@@ -74,6 +74,14 @@ namespace PhotoSi.ProductsService.Repositories
                 .Update(product);
 
             return updated is not null ? true : false;
+        }
+
+        public bool Delete(Product product)
+        {
+            var deleted = _products
+                .Remove(product);
+
+            return deleted is not null ? true : false;
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

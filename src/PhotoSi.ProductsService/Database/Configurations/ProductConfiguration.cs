@@ -4,7 +4,7 @@ using PhotoSi.ProductsService.Models;
 
 namespace PhotoSi.ProductsService.Database.Configurations
 {
-    internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
+    internal class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {

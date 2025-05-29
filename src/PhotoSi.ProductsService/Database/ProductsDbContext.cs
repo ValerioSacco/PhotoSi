@@ -3,7 +3,7 @@ using PhotoSi.ProductsService.Models;
 
 namespace PhotoSi.ProductsService.Database
 {
-    public sealed class ProductsDbContext : DbContext
+    public class ProductsDbContext : DbContext
     {
         public ProductsDbContext(DbContextOptions<ProductsDbContext> options)
             : base(options)

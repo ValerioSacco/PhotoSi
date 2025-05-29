@@ -3,7 +3,7 @@ using PhotoSi.ProductsService.Features.Shared;
 
 namespace PhotoSi.ProductsService.Middleware
 {
-    internal sealed class GlobalExceptionHandlerMiddleware
+    internal class GlobalExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger;

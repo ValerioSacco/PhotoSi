@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhotoSi.ProductsService.Features.CreateProduct;
+using PhotoSi.ProductsService.Features.DeleteProduct;
 using PhotoSi.ProductsService.Features.GetProduct;
 using PhotoSi.ProductsService.Features.ListProducts;
 using PhotoSi.ProductsService.Features.UpdateProduct;
@@ -10,12 +11,10 @@ namespace PhotoSi.ProductsService.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> _logger;
         private readonly IMediator _mediator;
 
-        public ProductsController(IMediator mediator, ILogger<ProductsController> logger)
+        public ProductsController(IMediator mediator)
         {
-            _logger = logger;
             _mediator = mediator;
         }
 
@@ -69,6 +68,16 @@ namespace PhotoSi.ProductsService.Controllers
                 new { id = productId }, 
                 new { productId = productId }
             );
+        }
+
+
+        [HttpDelete("/products/{id:guid}", Name = "Delete one product")]
+        public async Task<IActionResult> Delete(
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id)
+        {
+            await _mediator.Send(new DeleteProductCommand(id), cancellationToken);
+            return Accepted();
         }
     }
 }

@@ -7,6 +7,8 @@ namespace PhotoSi.ProductsService.Repositories
     public interface ICategoryRepository
     {
         Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+        Task<List<Category>> ListAllAsync(CancellationToken cancellationToken);
     }
 
 
@@ -32,6 +34,15 @@ namespace PhotoSi.ProductsService.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
             return category;
+        }
+
+        public async Task<List<Category>> ListAllAsync(CancellationToken cancellationToken)
+        {
+            var categories = await _categories
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+
+            return categories;
         }
     }
 }
