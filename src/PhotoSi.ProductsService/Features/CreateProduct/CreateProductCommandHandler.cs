@@ -23,12 +23,15 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
                 Id = Guid.NewGuid(),
                 Name = request.name,
                 Description = request.description,
-                CategoryId = Guid.NewGuid()
+                CategoryId = request.categoryId
             };
 
-            var created = await _productRepository
+            await _productRepository
                 .CreateAsync(product, cancellationToken);
 
+            await _productRepository
+                .SaveChangesAsync(cancellationToken);
+                
             return product.Id;
         }
     }

@@ -4,37 +4,24 @@ using PhotoSi.ProductsService.Models;
 
 namespace PhotoSi.ProductsService.Repositories
 {
-    //public interface IProductRespository : IRepository<Product>;
-
-    //public class ProductRespository : BaseRepository<Product>, IProductRespository
-    //{
-    //    public ProductRespository(ProductsDbContext context) 
-    //        : base(context)
-    //    {
-    //    }
-
-    //    public override Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken)
-    //    {
-    //        return _dbSet
-    //            .AsNoTracking()
-    //            .Include(p => p.Category)
-    //            .FirstOrDefaultAsync(p => p.Code == id);      
-    //    }
-
-    //}
 
     public interface IProductRepository
     {
         Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-        Task<int> CreateAsync(Product product, CancellationToken cancellationToken);
+        Task<List<Product>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
+        Task<int> CountAsync(CancellationToken cancellationToken);
+        Task<bool> CreateAsync(Product product, CancellationToken cancellationToken);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
     public class ProductRepository : IProductRepository
     {
+        private readonly ProductsDbContext _dbContext;
         private readonly DbSet<Product> _products;
 
         public ProductRepository(ProductsDbContext dbContext)
         {
+            _dbContext = dbContext;
             _products = dbContext.Products;
         }
 
@@ -51,7 +38,28 @@ namespace PhotoSi.ProductsService.Repositories
             return product;
         }
 
-        public async Task<int> CreateAsync(
+
+        public Task<List<Product>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        {
+            var products = _products
+                .AsNoTracking()
+                .OrderBy(p => p.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Include(p => p.Category)
+                .ToListAsync(cancellationToken);
+
+            return products;
+        }
+
+        public async Task<int> CountAsync(CancellationToken cancellationToken)
+        {
+            return await _products
+                .AsNoTracking()
+                .CountAsync(cancellationToken);
+        }
+
+        public async Task<bool> CreateAsync(
             Product product, 
             CancellationToken cancellationToken
         )
@@ -59,7 +67,13 @@ namespace PhotoSi.ProductsService.Repositories
             var created = await _products
                 .AddAsync(product);
 
-            return 1;
+            return created is not null ? true : false;
+        }
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext
+                .SaveChangesAsync(cancellationToken);
         }
 
     }

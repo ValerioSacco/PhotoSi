@@ -1,4 +1,6 @@
-﻿namespace PhotoSi.ProductsService.Middleware
+﻿using PhotoSi.ProductsService.Features.Shared;
+
+namespace PhotoSi.ProductsService.Middleware
 {
     internal sealed class GlobalExceptionHandlerMiddleware
     {
@@ -17,6 +19,16 @@
             {
                 await _next(context);
             }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validation failed");
+                context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                var errorResponse = new
+                {
+                    errors = ex.Errors.ToList()
+                };
+                await context.Response.WriteAsJsonAsync(errorResponse);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unhandled exception occurred. Message: {Message}", ex.Message);
@@ -24,8 +36,7 @@
 
                 var errorResponse = new
                 {
-                    StatusCode = context.Response.StatusCode,
-                    Message = ex.Message
+                    message = ex.Message
                 };
 
                 await context.Response.WriteAsJsonAsync(errorResponse);

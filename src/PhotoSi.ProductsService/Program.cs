@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -16,8 +17,19 @@ builder.Services.AddDbContext<ProductsDbContext>(opt =>
     .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 });
 
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandTransactionBehavior<,>));
+
+
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+    //config.AddOpenBehavior(typeof(CommandTransactionBehavior<,>));
+    config.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
+});
+//builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandTransactionBehavior<,>));
+//builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+
+
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IUnitOfWork, ProductsUnitOfWork>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
