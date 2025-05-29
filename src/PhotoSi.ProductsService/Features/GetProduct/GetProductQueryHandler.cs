@@ -1,6 +1,5 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using PhotoSi.ProductsService.Database;
+using PhotoSi.ProductsService.Exceptions;
 using PhotoSi.ProductsService.Repositories;
 
 namespace PhotoSi.ProductsService.Features.GetProduct
@@ -21,6 +20,10 @@ namespace PhotoSi.ProductsService.Features.GetProduct
         {
             var product = await _productRespository
                 .GetByIdAsync(request.id, cancellationToken);
+
+            if (product is null) {
+                throw new NotFoundException("The product requested does not exist.");
+            }
 
             return new GetProductResponse(
                 product.Id,

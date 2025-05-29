@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PhotoSi.ProductsService.Features.CreateProduct;
 using PhotoSi.ProductsService.Features.GetProduct;
 using PhotoSi.ProductsService.Features.ListProducts;
+using PhotoSi.ProductsService.Features.UpdateProduct;
 
 namespace PhotoSi.ProductsService.Controllers
 {
@@ -20,8 +21,8 @@ namespace PhotoSi.ProductsService.Controllers
 
         [HttpGet("/products/{id:guid}", Name = "Get one product by id")]
         public async Task<IActionResult> Get(
-            [FromRoute] Guid id, 
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id
         )
         {
             var product = await _mediator.Send(new GetProductQuery(id), cancellationToken);
@@ -30,9 +31,10 @@ namespace PhotoSi.ProductsService.Controllers
 
         [HttpGet("/products", Name = "List all products")]
         public async Task<IActionResult> List(
-            [FromQuery] int pageNumber,
-            [FromQuery] int pageSize,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10
+        )
         {
             var products = await _mediator.Send(new ListProductsQuery(pageNumber, pageSize), cancellationToken);
             return Ok(products);
@@ -41,12 +43,28 @@ namespace PhotoSi.ProductsService.Controllers
 
         [HttpPost("/products", Name = "Create new product")]
         public async Task<IActionResult> Create(
-            [FromBody] CreateProductCommand command, 
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken,
+            [FromBody] CreateProductCommand command
         )
         {
             var productId = await _mediator.Send(command, cancellationToken);
             return CreatedAtRoute(
+                "Get one product by id", 
+                new { id = productId }, 
+                new { productId = productId }
+            );
+        }
+
+
+        [HttpPut("/products/{id:guid}", Name = "Update one product")]
+        public async Task<IActionResult> Update(
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id, 
+            [FromBody] UpdateProductCommand command
+        )
+        {
+            var productId = await _mediator.Send(command with { id = id }, cancellationToken);
+            return AcceptedAtRoute(
                 "Get one product by id", 
                 new { id = productId }, 
                 new { productId = productId }

@@ -2,5 +2,5 @@
 
 namespace PhotoSi.ProductsService.Features.ListProducts
 {
-    public record ListProductsQuery(int pageNumber = 1, int pageSize = 10) : IRequest<ListProductsResponse>;
+    public record ListProductsQuery(int pageNumber, int pageSize) : IRequest<ListProductsResponse>;
 }

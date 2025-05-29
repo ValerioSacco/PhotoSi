@@ -10,7 +10,8 @@ namespace PhotoSi.ProductsService.Repositories
         Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<List<Product>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
         Task<int> CountAsync(CancellationToken cancellationToken);
-        Task<bool> CreateAsync(Product product, CancellationToken cancellationToken);
+        bool Create(Product product);
+        bool Update(Product product);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
@@ -33,7 +34,7 @@ namespace PhotoSi.ProductsService.Repositories
             var product = await _products
                 .AsNoTracking()
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
             return product;
         }
@@ -59,15 +60,20 @@ namespace PhotoSi.ProductsService.Repositories
                 .CountAsync(cancellationToken);
         }
 
-        public async Task<bool> CreateAsync(
-            Product product, 
-            CancellationToken cancellationToken
-        )
+        public bool Create(Product product)
         {
-            var created = await _products
-                .AddAsync(product);
+            var created = _products
+                .Add(product);
 
             return created is not null ? true : false;
+        }
+
+        public bool Update(Product product)
+        {
+            var updated = _products
+                .Update(product);
+
+            return updated is not null ? true : false;
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
