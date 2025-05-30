@@ -34,6 +34,8 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
                 Id = Guid.NewGuid(),
                 Name = request.name,
                 Description = request.description,
+                Price = request.price,
+                ImageUrl = request.imageUrl,
                 CategoryId = request.categoryId
             };
 

@@ -12,11 +12,17 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Services.AddDbContext<ProductsDbContext>(opt =>
+//{
+//    opt.UseInMemoryDatabase("ProductServiceDb")
+//    .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+//});
 builder.Services.AddDbContext<ProductsDbContext>(opt =>
 {
-    opt.UseInMemoryDatabase("ProductServiceDb")
-    .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+    opt.UseSqlite(builder.Configuration.GetConnectionString("SqlLite"));
 });
+
+
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -27,11 +33,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-    //config.AddOpenBehavior(typeof(CommandTransactionBehavior<,>));
     config.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
 });
-//builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandTransactionBehavior<,>));
-//builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -50,7 +53,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ProductsDbContext>();
-    DatabaseSeeder.Seed(dbContext);
+    //dbContext.Database.EnsureCreated();
+    dbContext.Database.Migrate();
+    //DatabaseSeeder.Seed(dbContext);
 }
 
 

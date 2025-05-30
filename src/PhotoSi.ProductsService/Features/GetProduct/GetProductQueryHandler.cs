@@ -29,6 +29,8 @@ namespace PhotoSi.ProductsService.Features.GetProduct
                 product.Id,
                 product.Name,
                 product.Description,
+                product.Price,
+                product.ImageUrl,
                 product.Category.Name
             );
         }

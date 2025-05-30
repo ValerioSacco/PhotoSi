@@ -34,6 +34,8 @@ namespace PhotoSi.ProductsService.Features.UpdateProduct
 
             product.Name = request.name;
             product.Description = request.description;
+            product.Price = request.price;
+            product.ImageUrl = request.imageUrl;
             product.CategoryId = request.categoryId;
 
             _productRepository.Update(product);

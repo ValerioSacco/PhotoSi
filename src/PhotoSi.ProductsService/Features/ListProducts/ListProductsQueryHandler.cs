@@ -32,6 +32,8 @@ namespace PhotoSi.ProductsService.Features.ListProducts
                     p.Id,
                     p.Name,
                     p.Description,
+                    p.Price,
+                    p.ImageUrl,
                     p.Category?.Name ?? string.Empty
                 )).ToList()
             );

@@ -18,6 +18,16 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
                 .MaximumLength(500)
                 .WithMessage("Product description must not exceed 500 characters.");
 
+            RuleFor(command => command.price)
+                .GreaterThan(0)
+                .WithMessage("Product price must be greater than zero.");
+
+            RuleFor(command => command.imageUrl)
+                .NotEmpty()
+                .WithMessage("Product image URL is required.")
+                .MaximumLength(500)
+                .WithMessage("Product image URL must not exceed 500 characters.");
+
             RuleFor(command => command.categoryId)
                 .NotEmpty()
                 .WithMessage("Category ID is required.")

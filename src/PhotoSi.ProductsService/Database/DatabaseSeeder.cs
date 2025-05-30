@@ -35,7 +35,7 @@ namespace PhotoSi.ProductsService.Database
                 dbContext.Products.AddRange(
                     new Product
                     {
-                        Id = Guid.Parse("d8c55688-a5a4-4c59-becf-6145480bd7c3"),
+                        Id = Guid.NewGuid(),
                         Name = "Stampa 10x15",
                         Description = "Stampa di una foto in formato 10x15",
                         CategoryId = Guid.Parse("b3eaf4bd-2e57-4041-8cf0-6a19a55c9fb9")
