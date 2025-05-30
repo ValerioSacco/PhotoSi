@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
+using PhotoSi.Shared.Exceptions;
 
-namespace PhotoSi.ProductsService.Features.Shared
+namespace PhotoSi.Shared.Behaviors
 {
     public class ValidationPipelineBehavior<TRequest, TResponse>
         : IPipelineBehavior<TRequest, TResponse>
@@ -39,7 +40,7 @@ namespace PhotoSi.ProductsService.Features.Shared
 
             if (errors.Any())
             {
-                throw new ValidationException(errors);
+                throw new Exceptions.ValidationException(errors);
             }
 
             var response = await next();
@@ -47,13 +48,5 @@ namespace PhotoSi.ProductsService.Features.Shared
             return response;
         }
     }
-
-    public class ValidationException(IEnumerable<ValidationError> Errors)
-        : Exception("Validation failed")
-    {
-        public IEnumerable<ValidationError> Errors { get; } = Errors;
-    }
-
-    public record ValidationError(string propertyName, string errorMessage);
 
 }

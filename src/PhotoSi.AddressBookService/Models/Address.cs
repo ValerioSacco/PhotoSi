@@ -1,4 +1,6 @@
-﻿namespace PhotoSi.AddressBookService.Models
+﻿using PhotoSi.Shared.Models;
+
+namespace PhotoSi.AddressBookService.Models
 {
     public class Address : BaseModel
     {

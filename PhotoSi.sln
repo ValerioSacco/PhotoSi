@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.AddressBookService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.AddressBookService.UnitTests", "tests\PhotoSi.AddressBookService.UnitTests\PhotoSi.AddressBookService.UnitTests.csproj", "{E79E712B-3200-4D32-928E-A8478AE204E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSi.Shared", "src\PhotoSi.Shared\PhotoSi.Shared.csproj", "{A3CE457B-9FA2-4092-A905-21A22E60DFF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{E79E712B-3200-4D32-928E-A8478AE204E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E79E712B-3200-4D32-928E-A8478AE204E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E79E712B-3200-4D32-928E-A8478AE204E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CE457B-9FA2-4092-A905-21A22E60DFF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CE457B-9FA2-4092-A905-21A22E60DFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CE457B-9FA2-4092-A905-21A22E60DFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CE457B-9FA2-4092-A905-21A22E60DFF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

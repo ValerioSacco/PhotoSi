@@ -1,4 +1,6 @@
-﻿namespace PhotoSi.ProductsService.Models
+﻿using PhotoSi.Shared.Models;
+
+namespace PhotoSi.ProductsService.Models
 {
     public class Category : BaseModel
     {

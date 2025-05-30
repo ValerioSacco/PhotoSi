@@ -25,4 +25,8 @@
     <Folder Include="Database\Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PhotoSi.Shared\PhotoSi.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

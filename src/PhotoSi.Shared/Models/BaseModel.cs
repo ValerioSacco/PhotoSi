@@ -1,4 +1,4 @@
-﻿namespace PhotoSi.AddressBookService.Models
+﻿namespace PhotoSi.Shared.Models
 {
     public abstract class BaseModel
     {

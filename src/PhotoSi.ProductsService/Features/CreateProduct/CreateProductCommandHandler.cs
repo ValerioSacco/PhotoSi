@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using PhotoSi.ProductsService.Exceptions;
 using PhotoSi.ProductsService.Models;
 using PhotoSi.ProductsService.Repositories;
+using PhotoSi.Shared.Exceptions;
 
 namespace PhotoSi.ProductsService.Features.CreateProduct
 {

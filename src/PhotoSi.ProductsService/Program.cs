@@ -2,27 +2,19 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using PhotoSi.ProductsService.Database;
-using PhotoSi.ProductsService.Features.Shared;
-using PhotoSi.ProductsService.Middleware;
+using PhotoSi.Shared.Middleware;
 using PhotoSi.ProductsService.Repositories;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using PhotoSi.Shared.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<ProductsDbContext>(opt =>
-//{
-//    opt.UseInMemoryDatabase("ProductServiceDb")
-//    .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-//});
 builder.Services.AddDbContext<ProductsDbContext>(opt =>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("SqlLite"));
 });
-
-
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -39,7 +31,6 @@ builder.Services.AddMediatR(config =>
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-builder.Services.AddScoped<IUnitOfWork, ProductsUnitOfWork>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
@@ -53,9 +44,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ProductsDbContext>();
-    //dbContext.Database.EnsureCreated();
     dbContext.Database.Migrate();
-    //DatabaseSeeder.Seed(dbContext);
 }
 
 

@@ -1,9 +1,11 @@
-﻿using PhotoSi.ProductsService.Exceptions;
-using PhotoSi.ProductsService.Features.Shared;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using PhotoSi.Shared.Exceptions;
+using System.Text.Json;
 
-namespace PhotoSi.ProductsService.Middleware
+namespace PhotoSi.Shared.Middleware
 {
-    internal class GlobalExceptionHandlerMiddleware
+    public class GlobalExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger;
@@ -29,7 +31,7 @@ namespace PhotoSi.ProductsService.Middleware
                     message = "Input validation error",
                     errors = ex.Errors.ToList()
                 };
-                await context.Response.WriteAsJsonAsync(errorResponse);
+                await WriteAsJsonAsync(context.Response, errorResponse);
             }
             catch (NotFoundException ex)
             {
@@ -40,7 +42,7 @@ namespace PhotoSi.ProductsService.Middleware
                     message = "Item not found",
                     errors = ex.Message
                 };
-                await context.Response.WriteAsJsonAsync(errorResponse);
+                await WriteAsJsonAsync(context.Response, errorResponse);
             }
             catch (BusinessRuleException ex)
             {
@@ -51,7 +53,7 @@ namespace PhotoSi.ProductsService.Middleware
                     message = "Business rule violation",
                     errors = ex.Message
                 };
-                await context.Response.WriteAsJsonAsync(errorResponse);
+                await WriteAsJsonAsync(context.Response, errorResponse);
             }
             catch (Exception ex)
             {
@@ -64,9 +66,14 @@ namespace PhotoSi.ProductsService.Middleware
                     error = ex.Message
                 };
 
-                await context.Response.WriteAsJsonAsync(errorResponse);
+                await WriteAsJsonAsync(context.Response, errorResponse);
             }
         }
 
+        private async Task WriteAsJsonAsync(HttpResponse response, object data)
+        {
+            response.ContentType = "application/json";
+            await response.WriteAsync(JsonSerializer.Serialize(data));
+        }
     }
 }

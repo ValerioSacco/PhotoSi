@@ -34,4 +34,8 @@
     <Folder Include="Database\Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PhotoSi.Shared\PhotoSi.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

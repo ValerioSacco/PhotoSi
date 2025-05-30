@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using PhotoSi.ProductsService.Exceptions;
 using PhotoSi.ProductsService.Repositories;
+using PhotoSi.Shared.Exceptions;
 
 namespace PhotoSi.ProductsService.Features.GetProduct
 {

@@ -1,4 +1,6 @@
-﻿namespace PhotoSi.UsersService.Models
+﻿using PhotoSi.Shared.Models;
+
+namespace PhotoSi.UsersService.Models
 {
     public class ShipmentAddress : BaseModel
     {

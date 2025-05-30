@@ -1,4 +1,4 @@
-﻿namespace PhotoSi.ProductsService.Exceptions
+﻿namespace PhotoSi.Shared.Exceptions
 {
     public class BusinessRuleException : Exception
     {
