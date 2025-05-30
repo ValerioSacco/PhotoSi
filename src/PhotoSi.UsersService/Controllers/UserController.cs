@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace PhotoSi.UsersService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class UserController : ControllerBase
     {
         public UserController()
@@ -11,8 +10,8 @@ namespace PhotoSi.UsersService.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost("/users", Name = "Create new user")]
+        public async Task<IActionResult> Create()
         {
             return Ok();
         }

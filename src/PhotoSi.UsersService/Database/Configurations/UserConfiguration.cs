@@ -12,7 +12,7 @@ namespace PhotoSi.UsersService.Database.Configurations
 
             builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.Username)
+            builder.Property(u => u.UserName)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -47,9 +47,10 @@ namespace PhotoSi.UsersService.Database.Configurations
                 new User
                 {
                     Id = Guid.Parse("0d4bdc20-95dd-4fe3-98b3-ffac3eadae6d"),
-                    Username = "User01",
+                    UserName = "User01",
                     FirstName = "Mario",
                     LastName = "Rossi",
+                    Email = "mario.rossi@gmail.com",
                     ProfilePictureUrl = "https://example.com/images/user01.jpg",
                     PhoneNumber = "+391234567890",
                     ShipmentAddressId = Guid.Parse("f2b51297-7948-4816-98da-e8502aba672e"),
@@ -58,9 +59,10 @@ namespace PhotoSi.UsersService.Database.Configurations
                 new User
                 {
                     Id = Guid.Parse("dc1dc650-ee84-4f3d-9cca-a0baf9421d4e"),
-                    Username = "User02",
+                    UserName = "User02",
                     FirstName = "Luca",
                     LastName = "Bianchi",
+                    Email = "luca.bianchi@gmail.com",
                     ProfilePictureUrl = "https://example.com/images/user02.jpg",
                     PhoneNumber = "+391234567891",
                     ShipmentAddressId = Guid.Parse("e1d0862b-d5f8-426a-af8d-a05f03d3ea65"),
@@ -69,9 +71,10 @@ namespace PhotoSi.UsersService.Database.Configurations
                 new User
                 {
                     Id = Guid.Parse("57b9385d-6b77-4db8-a1a0-510d54631257"),
-                    Username = "User03",
+                    UserName = "User03",
                     FirstName = "Giulia",
                     LastName = "Verdi",
+                    Email = "giulia.verdi@gmail.com",
                     ProfilePictureUrl = "https://example.com/images/user03.jpg",
                     PhoneNumber = "+391234567892",
                     ShipmentAddressId = Guid.Parse("ad7ff260-682e-407e-86e5-e03891f100a4"),
