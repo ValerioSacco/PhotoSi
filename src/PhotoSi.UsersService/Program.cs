@@ -1,3 +1,4 @@
+using PhotoSi.Shared.Middleware;
 using PhotoSi.UsersService;
 using PhotoSi.UsersService.Database;
 using PhotoSi.UsersService.Features;
@@ -16,6 +17,7 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 app.ApplyMigrations();
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 

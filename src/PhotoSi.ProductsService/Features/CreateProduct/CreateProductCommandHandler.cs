@@ -39,12 +39,15 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
                 CategoryId = request.categoryId
             };
 
-            _productRepository.Create(product);
-
-            await _productRepository
-                .SaveChangesAsync(cancellationToken);
-                
-            return product.Id;
+            if (_productRepository.Create(product))
+            {
+                await _productRepository.SaveChangesAsync(cancellationToken);
+                return product.Id;
+            }
+            else
+            {
+                throw new Exception("Failed to create product");
+            }
         }
     }
 }

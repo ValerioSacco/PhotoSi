@@ -22,12 +22,14 @@ namespace PhotoSi.ProductsService.Features.DeleteProduct
                 throw new NotFoundException("The product requested does not exist.");
             }
 
-            _productRepository.Delete(product);
-
-            await _productRepository
-                .SaveChangesAsync(cancellationToken);
-
-            return;
+            if (_productRepository.Delete(product))
+            {
+                await _productRepository.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                throw new Exception("Failed to delete product");
+            }
         }
     }
 }

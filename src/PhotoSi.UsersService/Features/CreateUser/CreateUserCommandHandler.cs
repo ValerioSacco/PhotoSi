@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PhotoSi.Shared.Exceptions;
 using PhotoSi.UsersService.Models;
 using PhotoSi.UsersService.Repositories;
 using PhotoSi.UsersService.Services;
@@ -34,7 +35,7 @@ namespace PhotoSi.UsersService.Features.CreateUser
 
             if (!addressValid)
             {
-                throw new Exception("Invalid shipment address provided. Check address book and pick an existing address.");
+                throw new BusinessRuleException("Invalid shipment address provided. Check address book and pick an existing address.");
             }
 
             var user = new User()

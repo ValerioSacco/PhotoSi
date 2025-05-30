@@ -38,12 +38,15 @@ namespace PhotoSi.ProductsService.Features.UpdateProduct
             product.ImageUrl = request.imageUrl;
             product.CategoryId = request.categoryId;
 
-            _productRepository.Update(product);
-
-            await _productRepository
-                .SaveChangesAsync(cancellationToken);
-
-            return product.Id;
+            if (_productRepository.Update(product))
+            {
+                await _productRepository.SaveChangesAsync(cancellationToken);
+                return product.Id;
+            }
+            else
+            {
+                throw new Exception("Failed to update product");
+            }
         }
     }
 }
