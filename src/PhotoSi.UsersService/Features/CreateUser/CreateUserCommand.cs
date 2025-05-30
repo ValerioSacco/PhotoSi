@@ -14,6 +14,8 @@ namespace PhotoSi.UsersService.Features.CreateUser
         string firstname, 
         string lastname, 
         string email,
+        string profilePictureUrl,
+        string phoneNumber,
         ShipmentAddressRequest shipmentAddress
     ) : IRequest<Guid>;
 }

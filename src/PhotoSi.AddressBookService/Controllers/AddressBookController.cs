@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhotoSi.AddressBookService.Database;
+using System.Runtime.InteropServices;
 
 namespace PhotoSi.AddressBookService.Controllers
 {
@@ -14,16 +15,21 @@ namespace PhotoSi.AddressBookService.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet("/addresses/{postalCode}/{street}", Name = "Find address on address book by postal code and street")]
+        [HttpGet("/addresses/{country}/{city}/{postalCode}/{street}", Name = "Find address on address book by postal code and street")]
         public async Task<IActionResult> Get(
             CancellationToken cancellationToken, 
+            string country,
+            string city,
             string postalCode, 
             string street
         )
         {
             var address = await _dbContext.Addresses
                 .FirstOrDefaultAsync(
-                    a => a.PostalCode == postalCode && a.Street == street,
+                    a => a.Country == country && 
+                    a.City == city && 
+                    a.PostalCode == postalCode && 
+                    a.Street == street,
                     cancellationToken
                 );
 

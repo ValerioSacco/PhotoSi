@@ -35,7 +35,7 @@ namespace PhotoSi.UsersService.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
@@ -68,12 +68,12 @@ namespace PhotoSi.UsersService.Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedAt", "Email", "FirstName", "LastName", "PhoneNumber", "ProfilePictureUrl", "ShipmentAddressId", "Username", "Version" },
+                columns: new[] { "Id", "CreatedAt", "Email", "FirstName", "LastName", "PhoneNumber", "ProfilePictureUrl", "ShipmentAddressId", "UserName", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("0d4bdc20-95dd-4fe3-98b3-ffac3eadae6d"), new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc), "", "Mario", "Rossi", "+391234567890", "https://example.com/images/user01.jpg", new Guid("f2b51297-7948-4816-98da-e8502aba672e"), "User01", 1 },
-                    { new Guid("57b9385d-6b77-4db8-a1a0-510d54631257"), new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc), "", "Giulia", "Verdi", "+391234567892", "https://example.com/images/user03.jpg", new Guid("ad7ff260-682e-407e-86e5-e03891f100a4"), "User03", 1 },
-                    { new Guid("dc1dc650-ee84-4f3d-9cca-a0baf9421d4e"), new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc), "", "Luca", "Bianchi", "+391234567891", "https://example.com/images/user02.jpg", new Guid("e1d0862b-d5f8-426a-af8d-a05f03d3ea65"), "User02", 1 }
+                    { new Guid("0d4bdc20-95dd-4fe3-98b3-ffac3eadae6d"), new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc), "mario.rossi@gmail.com", "Mario", "Rossi", "+391234567890", "https://example.com/images/user01.jpg", new Guid("f2b51297-7948-4816-98da-e8502aba672e"), "User01", 1 },
+                    { new Guid("57b9385d-6b77-4db8-a1a0-510d54631257"), new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc), "giulia.verdi@gmail.com", "Giulia", "Verdi", "+391234567892", "https://example.com/images/user03.jpg", new Guid("ad7ff260-682e-407e-86e5-e03891f100a4"), "User03", 1 },
+                    { new Guid("dc1dc650-ee84-4f3d-9cca-a0baf9421d4e"), new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc), "luca.bianchi@gmail.com", "Luca", "Bianchi", "+391234567891", "https://example.com/images/user02.jpg", new Guid("e1d0862b-d5f8-426a-af8d-a05f03d3ea65"), "User02", 1 }
                 });
 
             migrationBuilder.CreateIndex(
