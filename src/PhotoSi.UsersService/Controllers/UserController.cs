@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhotoSi.UsersService.Features.CreateUser;
+using PhotoSi.UsersService.Features.GetUser;
 
 namespace PhotoSi.UsersService.Controllers
 {
@@ -14,6 +15,18 @@ namespace PhotoSi.UsersService.Controllers
             _mediator = mediator;
         }
 
+
+        [HttpGet("/users/{id}", Name = "Get one user by id")]
+        public async Task<IActionResult> GetById(
+            CancellationToken cancellationToken,
+            Guid id
+        )
+        {
+            var user = await _mediator.Send(new GetUserQuery(id), cancellationToken);
+            return Ok(user);
+        }
+
+
         [HttpPost("/users", Name = "Create new user")]
         public async Task<IActionResult> Create(
             CancellationToken cancellationToken, 
@@ -22,7 +35,7 @@ namespace PhotoSi.UsersService.Controllers
         {
             var userId = await _mediator.Send(command, cancellationToken);
             return CreatedAtRoute(
-                "Get one product by id",
+                "Get one user by id",
                 new { id = userId },
                 new { userId = userId }
             );

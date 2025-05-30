@@ -8,6 +8,7 @@ namespace PhotoSi.UsersService.Repositories
 
     public interface IUserRepository
     {
+        Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         bool Create(User user);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
@@ -23,18 +24,18 @@ namespace PhotoSi.UsersService.Repositories
             _users = dbContext.Users;
         }
 
-        //public async Task<Product?> GetByIdAsync(
-        //    Guid id,
-        //    CancellationToken cancellationToken
-        //)
-        //{
-        //    var product = await _users
-        //        .AsNoTracking()
-        //        .Include(p => p.Category)
-        //        .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        public async Task<User?> GetByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken
+        )
+        {
+            var user = await _users
+                .AsNoTracking()
+                .Include(u => u.ShipmentAddress)
+                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
-        //    return product;
-        //}
+            return user;
+        }
 
         //public async Task<List<Product>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
         //{
