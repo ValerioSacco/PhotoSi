@@ -27,7 +27,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
-app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
