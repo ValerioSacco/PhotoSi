@@ -13,6 +13,6 @@
         int count, 
         int pageNumber, 
         int pageSize, 
-        ICollection<ProductResponse> products
+        IList<ProductResponse> products
     );
 }

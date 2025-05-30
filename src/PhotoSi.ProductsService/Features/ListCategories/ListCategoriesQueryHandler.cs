@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using PhotoSi.ProductsService.Features.ListProducts;
 using PhotoSi.ProductsService.Repositories;
 
 namespace PhotoSi.ProductsService.Features.ListCategories
