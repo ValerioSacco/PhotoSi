@@ -1,15 +1,25 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddReverseProxy()
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    //app.UseSwagger();
+    //app.UseSwaggerUI(c =>
+    //{
+    //    c.SwaggerEndpoint("users-service/swagger/v1/swagger.json", "Users Service");
+    //    c.SwaggerEndpoint("products-service/swagger/v1/swagger.json", "Products Service");
+    //    c.RoutePrefix = "swagger";
+    //});
+}
 
-app.UseAuthorization();
+app.MapReverseProxy();
 
-app.MapControllers();
 
 app.Run();
