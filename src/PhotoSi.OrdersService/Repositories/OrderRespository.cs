@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhotoSi.OrdersService.Database;
 using PhotoSi.OrdersService.Models;
+using System.Xml.Schema;
 
 namespace PhotoSi.OrdersService.Repositories
 {
@@ -9,7 +10,7 @@ namespace PhotoSi.OrdersService.Repositories
         Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<List<Order>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
         Task<int> CountAsync(CancellationToken cancellationToken);
-        //bool Create(Product product);
+        bool Create(Order order);
         //bool Update(Product product);
         //bool Delete(Product product);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
@@ -63,13 +64,13 @@ namespace PhotoSi.OrdersService.Repositories
                 .CountAsync(cancellationToken);
         }
 
-        //public bool Create(Product product)
-        //{
-        //    var created = _orders
-        //        .Add(product);
+        public bool Create(Order order)
+        {
+            var created = _orders
+                .Add(order);
 
-        //    return created is not null ? true : false;
-        //}
+            return created is not null ? true : false;
+        }
 
         //public bool Update(Product product)
         //{
