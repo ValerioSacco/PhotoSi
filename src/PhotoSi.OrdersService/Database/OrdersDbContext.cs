@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PhotoSi.OrdersService.Models;
 
 namespace PhotoSi.OrdersService.Database
 {
@@ -17,5 +18,7 @@ namespace PhotoSi.OrdersService.Database
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderLine> OrderLines { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

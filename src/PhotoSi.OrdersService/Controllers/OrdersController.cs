@@ -10,7 +10,7 @@ namespace PhotoSi.OrdersService.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("/orders")]
         public async Task<IActionResult> Create()
         {
             await Task.CompletedTask;

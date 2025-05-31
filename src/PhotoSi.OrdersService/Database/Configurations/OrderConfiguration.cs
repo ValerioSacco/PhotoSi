@@ -19,10 +19,21 @@ namespace PhotoSi.ProductsService.Database.Configurations
             builder.Property(p => p.Version)
                 .IsConcurrencyToken();
 
-            builder.HasMany(o => o.Products);
+            builder.HasMany(o => o.OrderLines)
+                .WithOne(ol => ol.Order)
+                .HasForeignKey(ol => ol.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(o => o.User);
 
             builder.HasData(
-
+                new Order
+                {
+                    Id = Guid.Parse("186aa5d6-77dd-4b90-bc69-b487ba9c3893"),
+                    Currency = "EUR",
+                    UserId = Guid.Parse("0d4bdc20-95dd-4fe3-98b3-ffac3eadae6d"),
+                    CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                }
             );
         }
     }

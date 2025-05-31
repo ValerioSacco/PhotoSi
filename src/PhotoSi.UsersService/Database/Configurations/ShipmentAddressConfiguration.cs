@@ -24,13 +24,6 @@ namespace PhotoSi.UsersService.Database.Configurations
             builder.Property(a => a.Country)
                 .IsRequired();
 
-            //builder.HasOne(sa => sa.User)
-            //    .WithOne(u => u.ShipmentAddress)
-            //    .HasForeignKey<User>()
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-
             builder.HasData(
                 new ShipmentAddress
                 {
