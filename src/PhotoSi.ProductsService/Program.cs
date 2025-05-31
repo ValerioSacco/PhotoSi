@@ -2,6 +2,7 @@ using PhotoSi.ProductsService.Database;
 using PhotoSi.Shared.Middleware;
 using PhotoSi.ProductsService.Repositories;
 using PhotoSi.ProductsService.Features;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,21 @@ builder.Services.AddFeatureServices();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMassTransit(opt =>
+{
+    opt.SetKebabCaseEndpointNameFormatter();
+    opt.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(new Uri(builder.Configuration["RabbitMQ:Host"]!), h =>
+        {
+            h.Username(builder.Configuration["RabbitMQ:Username"]!);
+            h.Password(builder.Configuration["RabbitMQ:Password"]!);
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 

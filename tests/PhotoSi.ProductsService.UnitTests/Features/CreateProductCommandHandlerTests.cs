@@ -1,7 +1,10 @@
-﻿using NSubstitute;
+﻿using MassTransit;
+using MassTransit.Transports;
+using NSubstitute;
 using PhotoSi.ProductsService.Features.CreateProduct;
 using PhotoSi.ProductsService.Models;
 using PhotoSi.ProductsService.Repositories;
+using PhotoSi.Shared.Events;
 using PhotoSi.Shared.Exceptions;
 
 namespace PhotoSi.ProductsService.UnitTests.Features
@@ -11,12 +14,14 @@ namespace PhotoSi.ProductsService.UnitTests.Features
         private readonly CreateProductCommandHandler _handler;
         private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
         private readonly ICategoryRepository _categoryRepository = Substitute.For<ICategoryRepository>();
+        private readonly IPublishEndpoint _publishEndpoint = Substitute.For<IPublishEndpoint>();
 
         public CreateProductCommandHandlerTests()
         {
             _handler = new CreateProductCommandHandler(
                 _productRepository,
-                _categoryRepository
+                _categoryRepository,
+                _publishEndpoint
             );
         }
 
@@ -78,6 +83,35 @@ namespace PhotoSi.ProductsService.UnitTests.Features
             // Assert
             Assert.NotEqual(Guid.Empty, result);
             await _productRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
+        }
+
+
+        [Fact]
+        public async Task Handle_PublishEvent_WhenProductCreatedSuccessfully()
+        {
+            // Arrange
+            var command = CreateCommand(Guid.NewGuid());
+            var category = new Category { Id = command.categoryId, Name = "Album" };
+            _categoryRepository.GetByIdAsync(command.categoryId, Arg.Any<CancellationToken>())
+                .Returns(category);
+
+            _productRepository.Create(Arg.Any<Product>()).Returns(true);
+            _productRepository.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.NotEqual(Guid.Empty, result);
+            await _publishEndpoint.Received(1).Publish(
+                Arg.Is<ProductCreatedEvent>(e =>
+                    e.id == result &&
+                    e.name == command.name &&
+                    e.description == command.description &&
+                    e.price == command.price &&
+                    e.categoryName == category.Name
+                ), Arg.Any<CancellationToken>());
+
         }
     }
 }

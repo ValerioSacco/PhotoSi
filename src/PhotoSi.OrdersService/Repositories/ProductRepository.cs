@@ -7,6 +7,8 @@ namespace PhotoSi.OrdersService.Repositories
     public interface IProductRepository
     {
         Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        bool Create(Product product);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
     public class ProductRepository : IProductRepository
@@ -28,6 +30,20 @@ namespace PhotoSi.OrdersService.Repositories
                 .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
             return product;
+        }
+
+        public bool Create(Product product)
+        {
+            var created = _products
+                .Add(product);
+
+            return created is not null ? true : false;
+        }
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext
+                .SaveChangesAsync(cancellationToken);
         }
     }
 }
