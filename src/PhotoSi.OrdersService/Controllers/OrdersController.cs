@@ -1,20 +1,27 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PhotoSi.OrdersService.Features.GetOrder;
 
 namespace PhotoSi.OrdersService.Controllers
 {
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        public OrdersController()
-        {
+        private readonly IMediator _mediator;
 
+        public OrdersController(IMediator mediator)
+        {
+            _mediator = mediator;
         }
 
-        [HttpGet("/orders")]
-        public async Task<IActionResult> Create()
+        [HttpGet("/orders/{id}", Name = "Get order by id")]
+        public async Task<IActionResult> Get(
+            CancellationToken cancellationToken, 
+            [FromRoute] Guid id
+        )
         {
-            await Task.CompletedTask;
-            return Ok();
+            var order = await _mediator.Send(new GetOrderQuery(id), cancellationToken);
+            return Ok(order);
         }
     }
 }
