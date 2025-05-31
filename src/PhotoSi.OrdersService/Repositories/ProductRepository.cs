@@ -8,6 +8,7 @@ namespace PhotoSi.OrdersService.Repositories
     {
         Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         bool Create(Product product);
+        bool Update(Product product);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
@@ -38,6 +39,14 @@ namespace PhotoSi.OrdersService.Repositories
                 .Add(product);
 
             return created is not null ? true : false;
+        }
+
+        public bool Update(Product product)
+        {
+            var updated = _products
+                .Update(product);
+
+            return updated is not null ? true : false;
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

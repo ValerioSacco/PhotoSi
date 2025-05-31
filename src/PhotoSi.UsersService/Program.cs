@@ -1,8 +1,10 @@
+using MassTransit;
 using PhotoSi.Shared.Middleware;
 using PhotoSi.UsersService;
 using PhotoSi.UsersService.Database;
 using PhotoSi.UsersService.Features;
 using PhotoSi.UsersService.Repositories;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,23 @@ builder.Services.AddFeatureServices();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMassTransit(opt =>
+{
+    opt.SetKebabCaseEndpointNameFormatter();
+    opt.AddConsumers(Assembly.GetExecutingAssembly());
+
+    opt.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(new Uri(builder.Configuration["RabbitMQ:Host"]!), h =>
+        {
+            h.Username(builder.Configuration["RabbitMQ:Username"]!);
+            h.Password(builder.Configuration["RabbitMQ:Password"]!);
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 

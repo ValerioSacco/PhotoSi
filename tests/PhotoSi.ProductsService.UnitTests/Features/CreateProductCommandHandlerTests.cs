@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using MassTransit.Transports;
 using NSubstitute;
 using PhotoSi.ProductsService.Features.CreateProduct;
 using PhotoSi.ProductsService.Models;
@@ -25,7 +24,7 @@ namespace PhotoSi.ProductsService.UnitTests.Features
             );
         }
 
-        private static CreateProductCommand CreateCommand(Guid categoryId)
+        private static CreateProductCommand CreateValidCommand(Guid categoryId)
         {
             return new CreateProductCommand(
                 "Test Product",
@@ -40,7 +39,7 @@ namespace PhotoSi.ProductsService.UnitTests.Features
         public async Task Handle_ThrowsBusinessRuleException_WhenCategoryDoesNotExist()
         {
             // Arrange
-            var command = CreateCommand(Guid.NewGuid());
+            var command = CreateValidCommand(Guid.NewGuid());
             _categoryRepository.GetByIdAsync(command.categoryId, Arg.Any<CancellationToken>())
                 .Returns((Category?)null);
 
@@ -53,7 +52,7 @@ namespace PhotoSi.ProductsService.UnitTests.Features
         public async Task Handle_ThrowsException_WhenProductCreationFails()
         {
             // Arrange
-            var command = CreateCommand(Guid.NewGuid());
+            var command = CreateValidCommand(Guid.NewGuid());
             var category = new Category { Id = command.categoryId, Name = "Poster" };
             _categoryRepository.GetByIdAsync(command.categoryId, Arg.Any<CancellationToken>())
                 .Returns(category);
@@ -69,7 +68,7 @@ namespace PhotoSi.ProductsService.UnitTests.Features
         public async Task Handle_ReturnsProductId_WhenProductCreatedSuccessfully()
         {
             // Arrange
-            var command = CreateCommand(Guid.NewGuid());
+            var command = CreateValidCommand(Guid.NewGuid());
             var category = new Category { Id = command.categoryId, Name = "Album" };
             _categoryRepository.GetByIdAsync(command.categoryId, Arg.Any<CancellationToken>())
                 .Returns(category);
@@ -82,15 +81,14 @@ namespace PhotoSi.ProductsService.UnitTests.Features
 
             // Assert
             Assert.NotEqual(Guid.Empty, result);
-            await _productRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
         }
 
 
         [Fact]
-        public async Task Handle_PublishEvent_WhenProductCreatedSuccessfully()
+        public async Task Handle_SavesProduct_WhenProductCreatedSuccessfully()
         {
             // Arrange
-            var command = CreateCommand(Guid.NewGuid());
+            var command = CreateValidCommand(Guid.NewGuid());
             var category = new Category { Id = command.categoryId, Name = "Album" };
             _categoryRepository.GetByIdAsync(command.categoryId, Arg.Any<CancellationToken>())
                 .Returns(category);
@@ -102,7 +100,27 @@ namespace PhotoSi.ProductsService.UnitTests.Features
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.NotEqual(Guid.Empty, result);
+            await _productRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
+
+        }
+
+
+        [Fact]
+        public async Task Handle_PublishesEvent_WhenProductCreatedSuccessfully()
+        {
+            // Arrange
+            var command = CreateValidCommand(Guid.NewGuid());
+            var category = new Category { Id = command.categoryId, Name = "Album" };
+            _categoryRepository.GetByIdAsync(command.categoryId, Arg.Any<CancellationToken>())
+                .Returns(category);
+
+            _productRepository.Create(Arg.Any<Product>()).Returns(true);
+            _productRepository.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
             await _publishEndpoint.Received(1).Publish(
                 Arg.Is<ProductCreatedEvent>(e =>
                     e.id == result &&

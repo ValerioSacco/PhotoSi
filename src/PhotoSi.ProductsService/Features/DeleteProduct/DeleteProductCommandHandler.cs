@@ -1,5 +1,8 @@
-﻿using MediatR;
+﻿using MassTransit;
+using MediatR;
+using PhotoSi.ProductsService.Models;
 using PhotoSi.ProductsService.Repositories;
+using PhotoSi.Shared.Events;
 using PhotoSi.Shared.Exceptions;
 
 namespace PhotoSi.ProductsService.Features.DeleteProduct
@@ -7,10 +10,15 @@ namespace PhotoSi.ProductsService.Features.DeleteProduct
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
     {
         private readonly IProductRepository _productRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public DeleteProductCommandHandler(IProductRepository productRepository)
+        public DeleteProductCommandHandler(
+            IProductRepository productRepository, 
+            IPublishEndpoint publishEndpoint
+        )
         {
             _productRepository = productRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
@@ -24,7 +32,14 @@ namespace PhotoSi.ProductsService.Features.DeleteProduct
 
             if (_productRepository.Delete(product))
             {
-                await _productRepository.SaveChangesAsync(cancellationToken);
+                //I should send the event to an outbox
+                await _publishEndpoint.Publish(
+                    new ProductDeletedEvent(product.Id), 
+                    cancellationToken
+                );
+
+                await _productRepository
+                    .SaveChangesAsync(cancellationToken);
             }
             else
             {

@@ -17,11 +17,16 @@ namespace PhotoSi.OrdersService.UnitTests.Features
             _handler = new DeleteOrderCommandHandler(_orderRepository);
         }
 
+        private static DeleteOrderCommand CreateValidCommand(Guid id)
+        {
+            return new DeleteOrderCommand(id);
+        }
+
         [Fact]
-        public async Task Handle_OrderNotFound_ThrowsNotFoundException()
+        public async Task Handle_ThrowsNotFoundException_WhenOrderDoesNotExists()
         {
             // Arrange
-            var command = new DeleteOrderCommand(Guid.NewGuid());
+            var command = CreateValidCommand(Guid.NewGuid());
             _orderRepository.GetByIdAsync(command.id, Arg.Any<CancellationToken>())
                 .Returns((Order?)null);
 
@@ -31,10 +36,10 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_DeleteFails_ThrowsException()
+        public async Task Handle_ThrowsException_WhenOrderDeletionFails()
         {
             // Arrange
-            var command = new DeleteOrderCommand(Guid.NewGuid());
+            var command = CreateValidCommand(Guid.NewGuid());
             var order = new Order { Id = command.id };
             _orderRepository.GetByIdAsync(command.id, Arg.Any<CancellationToken>())
                 .Returns(order);
@@ -46,10 +51,10 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_ValidOrder_DeletesAndSaves()
+        public async Task Handle_RemovesOrder_WhenOrderDeletedSuccessfully()
         {
             // Arrange
-            var command = new DeleteOrderCommand(Guid.NewGuid());
+            var command = CreateValidCommand(Guid.NewGuid());
             var order = new Order { Id = command.id };
             _orderRepository.GetByIdAsync(command.id, Arg.Any<CancellationToken>())
                 .Returns(order);

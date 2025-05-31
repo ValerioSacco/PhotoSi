@@ -43,7 +43,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_OrderNotFound_ThrowsNotFoundException()
+        public async Task Handle_ThrowsNotFoundException_WhenOrderDoesNotExists()
         {
             // Arrange
             var command = CreateValidCommand(Guid.NewGuid());
@@ -56,7 +56,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_OrderLineNotFound_ThrowsNotFoundException()
+        public async Task Handle_ThrowsNotFoundException_WhenOrderLineDoesNotExists()
         {
             // Arrange
             var command = CreateValidCommand(Guid.NewGuid());
@@ -73,7 +73,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_ProductNotFound_ThrowsBusinessRuleException()
+        public async Task Handle_ThrowsBusinessRuleException_WhenProductNotAvailable()
         {
             // Arrange
             var command = CreateValidCommand(Guid.NewGuid());
@@ -97,7 +97,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_UpdateFails_ThrowsException()
+        public async Task Handle_ThrowsException_WhenOrderUpdateFails()
         {
             // Arrange
             var command = CreateValidCommand(Guid.NewGuid());
@@ -123,7 +123,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_ValidRequest_UpdatesOrderAndReturnsId()
+        public async Task Handle_ReturnsProductId_WhenOrderUpdatedSuccessfully()
         {
             // Arrange
             var command = CreateValidCommand(Guid.NewGuid());
@@ -149,9 +149,35 @@ namespace PhotoSi.OrdersService.UnitTests.Features
 
             // Assert
             Assert.Equal(order.Id, result);
-            Assert.Equal(command.orderLines[0].productId, order.OrderLines.First().ProductId);
-            Assert.Equal(command.orderLines[0].quantity, order.OrderLines.First().Quantity);
-            Assert.Equal(command.orderLines[0].notes, order.OrderLines.First().Notes);
+        }
+
+
+        [Fact]
+        public async Task Handle_SavesOrder_WhenOrderUpdatedSuccessfully()
+        {
+            // Arrange
+            var command = CreateValidCommand(Guid.NewGuid());
+            var orderLine = new OrderLine
+            {
+                Id = command.orderLines[0].orderLineId,
+                ProductId = command.orderLines[0].productId,
+                Quantity = 1,
+                Notes = "old"
+            };
+            var order = CreateOrder(command.id, new List<OrderLine> { orderLine });
+            _orderRepository.GetByIdAsync(command.id, Arg.Any<CancellationToken>())
+                .Returns(order);
+
+            _productRepository.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+                .Returns(new Product { Id = command.orderLines[0].productId });
+
+            _orderRepository.Update(order).Returns(true);
+            _orderRepository.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
             await _orderRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
         }
 

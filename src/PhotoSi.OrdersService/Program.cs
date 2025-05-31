@@ -1,9 +1,9 @@
 using MassTransit;
 using PhotoSi.OrdersService.Database;
-using PhotoSi.OrdersService.Events;
 using PhotoSi.OrdersService.Features;
 using PhotoSi.OrdersService.Repositories;
 using PhotoSi.Shared.Middleware;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMassTransit(opt =>
 {
     opt.SetKebabCaseEndpointNameFormatter();
-    opt.AddConsumer<ProductCreatedEventConsumer>();
+    opt.AddConsumers(Assembly.GetExecutingAssembly());
 
     opt.UsingRabbitMq((context, cfg) =>
     {

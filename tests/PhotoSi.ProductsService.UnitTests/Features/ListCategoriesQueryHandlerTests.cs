@@ -32,14 +32,14 @@ namespace PhotoSi.ProductsService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_ReturnsMappedCategories_WhenCategoriesExist()
+        public async Task Handle_ReturnsGetListCategoriesResponse_WhenCategoriesExist()
         {
             // Arrange
             var categories = new List<Category>
-        {
-            new Category { Id = Guid.NewGuid(), Name = "Cat1", Description = "Desc1" },
-            new Category { Id = Guid.NewGuid(), Name = "Cat2", Description = "Desc2" }
-        };
+            {
+                new Category { Id = Guid.NewGuid(), Name = "Cat1", Description = "Desc1" },
+                new Category { Id = Guid.NewGuid(), Name = "Cat2", Description = "Desc2" }
+            };
 
             _categoryRepository.ListAllAsync(Arg.Any<CancellationToken>())
                 .Returns(categories);
@@ -51,6 +51,13 @@ namespace PhotoSi.ProductsService.UnitTests.Features
             // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.categories.Count);
+            for (int i = 0; i < categories.Count; i++)
+            {
+                Assert.Equal(categories[i].Id, result.categories[i].id);
+                Assert.Equal(categories[i].Name, result.categories[i].name);
+                Assert.Equal(categories[i].Description, result.categories[i].description);
+            }
+
         }
     }
 }

@@ -39,34 +39,33 @@ namespace PhotoSi.ProductsService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_ReturnsMappedProducts_WhenProductsExist()
+        public async Task Handle_ReturnsGetListProductsResponse_WhenProductsExist()
         {
             // Arrange
             int totalCount = 2;
             int pageNumber = 2;
             int pageSize = 5;
             var category = new Category { Id = Guid.NewGuid(), Name = "Category1" };
-            var products = new List<Product>
-        {
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "Product1",
-                Description = "Desc1",
-                Price = 10.5m,
-                ImageUrl = "http://img1",
-                Category = category
-            },
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "Product2",
-                Description = "Desc2",
-                Price = 20.0m,
-                ImageUrl = "http://img2",
-                Category = null // test null category
-            }
-        };
+            var products = new List<Product>{
+                new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Product1",
+                    Description = "Desc1",
+                    Price = 10.5m,
+                    ImageUrl = "http://img1",
+                    Category = category
+                },
+                new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Product2",
+                    Description = "Desc2",
+                    Price = 20.0m,
+                    ImageUrl = "http://img2",
+                    Category = category
+                }
+            };
 
             _productRepository.CountAsync(Arg.Any<CancellationToken>()).Returns(totalCount);
             _productRepository.ListAllAsync(pageNumber, pageSize, Arg.Any<CancellationToken>())
@@ -84,12 +83,15 @@ namespace PhotoSi.ProductsService.UnitTests.Features
             Assert.Equal(pageSize, result.pageSize);
             Assert.Equal(2, result.products.Count);
 
-            Assert.Equal(products[0].Id, result.products[0].id);
-            Assert.Equal(products[0].Name, result.products[0].name);
-            Assert.Equal(products[0].Description, result.products[0].description);
-            Assert.Equal(products[0].Price, result.products[0].price);
-            Assert.Equal(products[0].ImageUrl, result.products[0].imageUrl);
-            Assert.Equal(category.Name, result.products[0].categoryName);
+            for (int i = 0; i < products.Count; i++)
+            {
+                Assert.Equal(products[i].Id, result.products[i].id);
+                Assert.Equal(products[i].Name, result.products[i].name);
+                Assert.Equal(products[i].Description, result.products[i].description);
+                Assert.Equal(products[i].Price, result.products[i].price);
+                Assert.Equal(products[i].ImageUrl, result.products[i].imageUrl);
+                Assert.Equal(products[i].Category?.Name, result.products[i].categoryName);
+            }
         }
     }
 }

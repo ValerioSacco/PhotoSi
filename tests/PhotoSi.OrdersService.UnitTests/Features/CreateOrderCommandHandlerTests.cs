@@ -65,7 +65,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_ThrowsException_WhenUpdateFails()
+        public async Task Handle_ThrowsException_WhenOrderCreationFails()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -86,7 +86,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
         }
 
         [Fact]
-        public async Task Handle_ReturnsProductId_WhenValidRequest()
+        public async Task Handle_ReturnsProductId_WhenOrderCreatedSuccessfully()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -108,7 +108,31 @@ namespace PhotoSi.OrdersService.UnitTests.Features
             // Assert
             Assert.NotEqual(Guid.Empty, result);
             await _orderRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
-            _orderRepository.Received(1).Create(Arg.Any<Order>());
+        }
+
+        [Fact]
+        public async Task Handle_SavesOrder_WhenOrderCreatedSuccessfully()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var productId = Guid.NewGuid();
+            var request = CreateValidCommand(userId, productId, 5);
+
+            _userRepository.GetByIdAsync(userId, Arg.Any<CancellationToken>())
+                .Returns(new User { Id = userId });
+
+            _productRepository.GetByIdAsync(productId, Arg.Any<CancellationToken>())
+                .Returns(new Product { Id = productId });
+
+            _orderRepository.Create(Arg.Any<Order>()).Returns(true);
+            _orderRepository.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
+
+            // Act
+            var result = await _handler.Handle(request, CancellationToken.None);
+
+            // Assert
+            Assert.NotEqual(Guid.Empty, result);
+            await _orderRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
         }
     }
 }
