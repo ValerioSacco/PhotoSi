@@ -23,7 +23,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
             // Arrange
             var command = new DeleteOrderCommand(Guid.NewGuid());
             _orderRepository.GetByIdAsync(command.id, Arg.Any<CancellationToken>())
-                .Returns((Order)null);
+                .Returns((Order?)null);
 
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(() =>
