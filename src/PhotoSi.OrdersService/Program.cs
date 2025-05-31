@@ -1,6 +1,7 @@
 using PhotoSi.OrdersService.Database;
 using PhotoSi.OrdersService.Features;
 using PhotoSi.OrdersService.Repositories;
+using PhotoSi.Shared.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +14,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.ApplyMigrations();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.ApplyMigrations();
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.MapControllers();
 
 app.Run();

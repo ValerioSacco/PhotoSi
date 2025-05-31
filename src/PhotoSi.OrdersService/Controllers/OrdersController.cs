@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhotoSi.OrdersService.Features.CreateOrder;
+using PhotoSi.OrdersService.Features.DeleteOrder;
 using PhotoSi.OrdersService.Features.GetOrder;
 using PhotoSi.OrdersService.Features.UpdateOrder;
 
@@ -53,6 +54,16 @@ namespace PhotoSi.OrdersService.Controllers
                 new { id = orderId },
                 new { orderId = orderId}
             );
+        }
+
+        [HttpDelete("/orders/{id}", Name = "Delete order")]
+        public async Task<IActionResult> Delete(
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id
+        )
+        {
+            await _mediator.Send(new DeleteOrderCommand(id), cancellationToken);
+            return NoContent();
         }
 
     }
