@@ -8,7 +8,9 @@
     );
 
     public record class GetOrderLineResponse(
+        Guid orderLineId,
         int quantity,
+        string notes,
         GetOrderLineProductResponse product
     );
 

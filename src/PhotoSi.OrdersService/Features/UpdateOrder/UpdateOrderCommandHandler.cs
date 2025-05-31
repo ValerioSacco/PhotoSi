@@ -1,69 +1,64 @@
 ﻿using MediatR;
-using PhotoSi.OrdersService.Features.CreateOrder;
+using PhotoSi.OrdersService.Features.UpdateOrder;
 using PhotoSi.OrdersService.Models;
 using PhotoSi.OrdersService.Repositories;
 using PhotoSi.Shared.Exceptions;
 
-namespace PhotoSi.ProductsService.Features.CreateProduct
+namespace PhotoSi.ProductsService.Features.UpdateProduct
 {
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Guid>
+    public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Guid>
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
 
-        public CreateOrderCommandHandler(
+        public UpdateOrderCommandHandler(
             IOrderRepository orderRepository,
-            IUserRepository userRepository,
             IProductRepository productRepository)
         {
             _orderRepository = orderRepository;
-            _userRepository = userRepository;
             _productRepository = productRepository;
         }
-
-        public async Task<Guid> Handle(
-            CreateOrderCommand request,
-            CancellationToken cancellationToken
-        )
+        public async Task<Guid> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            User user = await ValidateUser(request, cancellationToken);
+            var order = await _orderRepository.GetByIdAsync(request.id, cancellationToken);
+            if (order is null)
+            {
+                throw new NotFoundException($"Order with id {request.id} does not exist.");
+            }
+
             List<OrderLine> orderLines = await ValidateOrderLines(request, cancellationToken);
 
-            var order = new Order()
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                OrderLines = orderLines
-            };
 
-            if (_orderRepository.Create(order))
+            foreach (var orderLine in request.orderLines)
+            {
+                var lineToUpdate = order
+                    .OrderLines
+                    .FirstOrDefault(ol => ol.Id == orderLine.orderLineId);
+
+                if (lineToUpdate is null)
+                {
+                    throw new NotFoundException($"Order line with id {orderLine.orderLineId} does not exist in order {request.id}.");
+                }
+
+                lineToUpdate.ProductId = orderLine.productId;
+                lineToUpdate.Quantity = orderLine.quantity;
+                lineToUpdate.Notes = orderLine.notes;
+            }
+                
+
+            if (_orderRepository.Update(order))
             {
                 await _orderRepository.SaveChangesAsync(cancellationToken);
                 return order.Id;
             }
             else
             {
-                throw new Exception("Failed to create order");
+                throw new Exception("Failed to update order");
             }
-        }
-
-        private async Task<User> ValidateUser(
-            CreateOrderCommand request, 
-            CancellationToken cancellationToken
-        )
-        {
-            var user = await _userRepository.GetByIdAsync(request.userId, cancellationToken);
-            if (user is null)
-            {
-                throw new BusinessRuleException("An order must be associated to an available user.");
-            }
-
-            return user;
         }
 
         private async Task<List<OrderLine>> ValidateOrderLines(
-            CreateOrderCommand request, 
+            UpdateOrderCommand request, 
             CancellationToken cancellationToken
         )
         {
@@ -78,8 +73,7 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
                 orderLines.Add(new OrderLine
                 {
                     ProductId = product.Id,
-                    Quantity = orderLine.quantity,
-                    Notes = orderLine.notes
+                    Quantity = orderLine.quantity
                 });
             }
 

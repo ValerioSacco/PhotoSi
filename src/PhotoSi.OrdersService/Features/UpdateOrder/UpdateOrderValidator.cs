@@ -1,15 +1,11 @@
 ﻿using FluentValidation;
 
-namespace PhotoSi.OrdersService.Features.CreateOrder
+namespace PhotoSi.OrdersService.Features.UpdateOrder
 {
-    public class CreateOrderValidator : AbstractValidator<CreateOrderCommand>
+    public class UpdateOrderValidator : AbstractValidator<UpdateOrderCommand>
     {
-        public CreateOrderValidator()
+        public UpdateOrderValidator()
         {
-            RuleFor(command => command.userId)
-                .NotEmpty()
-                .WithMessage("User id must not be empty.");
-
             RuleFor(command => command.orderLines)
                 .NotEmpty()
                 .WithMessage("Order lines must not be empty.");
@@ -17,6 +13,9 @@ namespace PhotoSi.OrdersService.Features.CreateOrder
             RuleForEach(command => command.orderLines)
                 .ChildRules(orderLine =>
                 {
+                    orderLine.RuleFor(line => line.orderLineId)
+                        .NotEmpty()
+                        .WithMessage("Order line id must not be empty");
                     orderLine.RuleFor(line => line.productId)
                         .NotEmpty()
                         .WithMessage("Product id must not be empty.");
@@ -26,6 +25,7 @@ namespace PhotoSi.OrdersService.Features.CreateOrder
                     orderLine.RuleFor(line => line.notes)
                         .MaximumLength(500)
                         .WithMessage("Notes can be maximum 500 charcters long");
+
                 });
         }
     }

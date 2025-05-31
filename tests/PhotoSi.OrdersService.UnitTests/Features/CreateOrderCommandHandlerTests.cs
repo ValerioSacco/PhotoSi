@@ -24,7 +24,7 @@ namespace PhotoSi.OrdersService.UnitTests.Features
             (   userId,
                 new List<CreateOrderLineRequest>()
                 {
-                    new CreateOrderLineRequest(productId, quantity)
+                    new CreateOrderLineRequest(productId, quantity, String.Empty)
                 }
             );
         }

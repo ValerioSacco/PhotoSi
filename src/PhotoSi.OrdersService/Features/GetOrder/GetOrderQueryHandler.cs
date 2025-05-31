@@ -43,7 +43,9 @@ namespace PhotoSi.OrdersService.Features.GetOrder
                 ),
                 order.OrderLines.Select(ol => new GetOrderLineResponse
                 (
+                    ol.Id,
                     ol.Quantity,
+                    ol.Notes ?? String.Empty,
                     new GetOrderLineProductResponse
                     (
                         ol.Product.Name,

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhotoSi.OrdersService.Features.CreateOrder;
 using PhotoSi.OrdersService.Features.GetOrder;
+using PhotoSi.OrdersService.Features.UpdateOrder;
 
 namespace PhotoSi.OrdersService.Controllers
 {
@@ -33,10 +34,26 @@ namespace PhotoSi.OrdersService.Controllers
         {
             var orderId = await _mediator.Send(command, cancellationToken);
             return CreatedAtRoute(
-                "Get order by id", 
-                new { id = orderId }, 
+                "Get order by id",
+                new { id = orderId },
+                new { orderId = orderId }
+            );
+        }
+
+        [HttpPut("/orders/{id}", Name = "Update order")]
+        public async Task<IActionResult> Update(
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id,
+            [FromBody] UpdateOrderCommand command
+        )
+        {
+            var orderId = await _mediator.Send(command with { id = id}, cancellationToken);
+            return AcceptedAtRoute(
+                "Get order by id",
+                new { id = orderId },
                 new { orderId = orderId}
             );
         }
+
     }
 }

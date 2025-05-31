@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhotoSi.OrdersService.Database;
 using PhotoSi.OrdersService.Models;
-using System.Xml.Schema;
 
 namespace PhotoSi.OrdersService.Repositories
 {
@@ -11,8 +10,8 @@ namespace PhotoSi.OrdersService.Repositories
         Task<List<Order>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
         Task<int> CountAsync(CancellationToken cancellationToken);
         bool Create(Order order);
-        //bool Update(Product product);
-        //bool Delete(Product product);
+        bool Update(Order order);
+        bool Delete(Order order);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
@@ -72,21 +71,21 @@ namespace PhotoSi.OrdersService.Repositories
             return created is not null ? true : false;
         }
 
-        //public bool Update(Product product)
-        //{
-        //    var updated = _orders
-        //        .Update(product);
+        public bool Update(Order order)
+        {
+            var updated = _orders
+                .Update(order);
 
-        //    return updated is not null ? true : false;
-        //}
+            return updated is not null ? true : false;
+        }
 
-        //public bool Delete(Product product)
-        //{
-        //    var deleted = _orders
-        //        .Remove(product);
+        public bool Delete(Order order)
+        {
+            var deleted = _orders
+                .Remove(order);
 
-        //    return deleted is not null ? true : false;
-        //}
+            return deleted is not null ? true : false;
+        }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
