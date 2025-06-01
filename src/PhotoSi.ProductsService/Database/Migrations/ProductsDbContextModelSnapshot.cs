@@ -36,10 +36,6 @@ namespace PhotoSi.ProductsService.Database.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Version")
-                        .IsConcurrencyToken()
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
@@ -53,24 +49,21 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Id = new Guid("b3eaf4bd-2e57-4041-8cf0-6a19a55c9fb9"),
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Stampa semplice di una foto",
-                            Name = "Stampe",
-                            Version = 1
+                            Name = "Stampe"
                         },
                         new
                         {
                             Id = new Guid("59cf0ad7-89a8-4dd5-83da-9cb50608080b"),
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Gadget per il tempo libero",
-                            Name = "Gadgets",
-                            Version = 1
+                            Name = "Gadgets"
                         },
                         new
                         {
                             Id = new Guid("1c3e24c8-b0c5-4c9b-8b28-f5c5ec2c819a"),
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Biglietti auguri per ricorrenze",
-                            Name = "Biglietti",
-                            Version = 1
+                            Name = "Biglietti"
                         });
                 });
 
@@ -104,10 +97,6 @@ namespace PhotoSi.ProductsService.Database.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Version")
-                        .IsConcurrencyToken()
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -123,8 +112,7 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Description = "Stampa di una foto in formato 10x15 cm",
                             ImageUrl = "https://example.com/images/stampa-foto-10x15.jpg",
                             Name = "Stampa Foto 10x15",
-                            Price = 10.50m,
-                            Version = 1
+                            Price = 10.50m
                         },
                         new
                         {
@@ -134,8 +122,7 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Description = "Tazza con stampa personalizzata",
                             ImageUrl = "https://example.com/images/tazza-personalizzata.jpg",
                             Name = "Tazza Personalizzata",
-                            Price = 15.00m,
-                            Version = 1
+                            Price = 15.00m
                         },
                         new
                         {
@@ -145,8 +132,7 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Description = "Biglietto di auguri personalizzato per ogni occasione",
                             ImageUrl = "https://example.com/images/biglietto-auguri.jpg",
                             Name = "Biglietto di Auguri",
-                            Price = 5.00m,
-                            Version = 1
+                            Price = 5.00m
                         },
                         new
                         {
@@ -156,8 +142,7 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Description = "Calendario personalizzato da tavolo",
                             ImageUrl = "https://example.com/images/calendario-tavolo.jpg",
                             Name = "Calendario da Tavolo",
-                            Price = 20.00m,
-                            Version = 1
+                            Price = 20.00m
                         },
                         new
                         {
@@ -167,8 +152,7 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Description = "Poster di grandi dimensioni per decorare le pareti",
                             ImageUrl = "https://example.com/images/poster-50x70.jpg",
                             Name = "Poster 50x70",
-                            Price = 30.00m,
-                            Version = 1
+                            Price = 30.00m
                         },
                         new
                         {
@@ -178,8 +162,7 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Description = "Album fotografico personalizzato per conservare i ricordi",
                             ImageUrl = "https://example.com/images/album-fotografico.jpg",
                             Name = "Album Fotografico",
-                            Price = 25.00m,
-                            Version = 1
+                            Price = 25.00m
                         },
                         new
                         {
@@ -189,8 +172,7 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             Description = "Stampa di alta qualità su tela per un effetto artistico",
                             ImageUrl = "https://example.com/images/stampa-tela.jpg",
                             Name = "Stampa su Tela",
-                            Price = 45.00m,
-                            Version = 1
+                            Price = 45.00m
                         });
                 });
 

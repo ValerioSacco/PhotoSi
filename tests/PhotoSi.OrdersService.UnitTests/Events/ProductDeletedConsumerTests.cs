@@ -13,6 +13,7 @@ namespace PhotoSi.OrdersService.UnitTests.Events
         private readonly ProductDeletedEventConsumer _consumer;
         private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
         private readonly ILogger<ProductDeletedEventConsumer> _logger = Substitute.For<ILogger<ProductDeletedEventConsumer>>();
+        private readonly ConsumeContext<ProductDeletedEvent> _context = Substitute.For<ConsumeContext<ProductDeletedEvent>>();
 
         public ProductDeletedConsumerTests()
         {
@@ -32,16 +33,15 @@ namespace PhotoSi.OrdersService.UnitTests.Events
             var productId = Guid.NewGuid();
             var product = new Product { Id = productId, IsAvailable = true };
             var productEvent = CreateProductDeletedEvent(productId);
-            var context = Substitute.For<ConsumeContext<ProductDeletedEvent>>();
-            context.Message.Returns(productEvent);
-            context.CancellationToken.Returns(CancellationToken.None);
+            _context.Message.Returns(productEvent);
+            _context.CancellationToken.Returns(CancellationToken.None);
 
             _productRepository.GetByIdAsync(productId, CancellationToken.None)
                 .Returns(product);
             _productRepository.Update(product).Returns(true);
 
             // Act
-            await _consumer.Consume(context);
+            await _consumer.Consume(_context);
 
             // Assert
             Assert.False(product.IsAvailable);
@@ -53,15 +53,14 @@ namespace PhotoSi.OrdersService.UnitTests.Events
         {
             // Arrange
             var productEvent = CreateProductDeletedEvent(Guid.NewGuid());
-            var context = Substitute.For<ConsumeContext<ProductDeletedEvent>>();
-            context.Message.Returns(productEvent);
-            context.CancellationToken.Returns(CancellationToken.None);
+            _context.Message.Returns(productEvent);
+            _context.CancellationToken.Returns(CancellationToken.None);
 
             _productRepository.GetByIdAsync(productEvent.id, CancellationToken.None)
                 .Returns((Product?)null);
 
             // Act
-            await _consumer.Consume(context);
+            await _consumer.Consume(_context);
 
             // Assert
             _logger.Received(1).LogWarning($"Product not found: {productEvent.id}");
@@ -74,16 +73,15 @@ namespace PhotoSi.OrdersService.UnitTests.Events
             var productId = Guid.NewGuid();
             var product = new Product { Id = productId, IsAvailable = true };
             var productEvent = CreateProductDeletedEvent(productId);
-            var context = Substitute.For<ConsumeContext<ProductDeletedEvent>>();
-            context.Message.Returns(productEvent);
-            context.CancellationToken.Returns(CancellationToken.None);
+            _context.Message.Returns(productEvent);
+            _context.CancellationToken.Returns(CancellationToken.None);
 
             _productRepository.GetByIdAsync(productId, CancellationToken.None)
                 .Returns(product);
             _productRepository.Update(product).Returns(true);
 
             // Act
-            await _consumer.Consume(context);
+            await _consumer.Consume(_context);
 
             // Assert
             Assert.False(product.IsAvailable);
@@ -97,16 +95,15 @@ namespace PhotoSi.OrdersService.UnitTests.Events
             var productId = Guid.NewGuid();
             var product = new Product { Id = productId, IsAvailable = true };
             var productEvent = CreateProductDeletedEvent(productId);
-            var context = Substitute.For<ConsumeContext<ProductDeletedEvent>>();
-            context.Message.Returns(productEvent);
-            context.CancellationToken.Returns(CancellationToken.None);
+            _context.Message.Returns(productEvent);
+            _context.CancellationToken.Returns(CancellationToken.None);
 
             _productRepository.GetByIdAsync(productId, CancellationToken.None)
                 .Returns(product);
             _productRepository.Update(product).Returns(false);
 
             // Act & Assert
-            var ex = await Assert.ThrowsAsync<Exception>(() => _consumer.Consume(context));
+            var ex = await Assert.ThrowsAsync<Exception>(() => _consumer.Consume(_context));
             Assert.Equal("Failed to set product unavailable in the database.", ex.Message);
             _logger.Received(1).LogError($"Failed to set product unavailble: {product.Id}");
         }

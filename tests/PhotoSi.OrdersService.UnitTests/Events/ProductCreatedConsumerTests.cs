@@ -14,6 +14,7 @@ namespace PhotoSi.OrdersService.UnitTests.Events
         private readonly ProductCreatedEventConsumer _consumer;
         private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
         private readonly ILogger<ProductCreatedEventConsumer> _logger = Substitute.For<ILogger<ProductCreatedEventConsumer>>();
+        private readonly ConsumeContext<ProductCreatedEvent> _context = Substitute.For<ConsumeContext<ProductCreatedEvent>>();
 
         public ProductCreatedConsumerTests()
         {
@@ -37,15 +38,14 @@ namespace PhotoSi.OrdersService.UnitTests.Events
         {
             // Arrange
             var productEvent = ProductCreatedEvent();
-            var context = Substitute.For<ConsumeContext<ProductCreatedEvent>>();
-            context.Message.Returns(productEvent);
-            context.CancellationToken.Returns(CancellationToken.None);
+            _context.Message.Returns(productEvent);
+            _context.CancellationToken.Returns(CancellationToken.None);
 
             _productRepository.Create(Arg.Any<Product>()).Returns(true);
             _productRepository.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(1));
 
             // Act
-            await _consumer.Consume(context);
+            await _consumer.Consume(_context);
 
             // Assert
             _productRepository.Received(1).Create(Arg.Is<Product>(p =>
@@ -64,15 +64,14 @@ namespace PhotoSi.OrdersService.UnitTests.Events
         {
             // Arrange
             var productEvent = ProductCreatedEvent();
-            var context = Substitute.For<ConsumeContext<ProductCreatedEvent>>();
-            context.Message.Returns(productEvent);
-            context.CancellationToken.Returns(CancellationToken.None);
+            _context.Message.Returns(productEvent);
+            _context.CancellationToken.Returns(CancellationToken.None);
 
             _productRepository.Create(Arg.Any<Product>()).Returns(true);
             _productRepository.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(1));
 
             // Act
-            await _consumer.Consume(context);
+            await _consumer.Consume(_context);
 
             // Assert
             _productRepository.Received(1).Create(Arg.Is<Product>(p =>
@@ -91,14 +90,13 @@ namespace PhotoSi.OrdersService.UnitTests.Events
         {
             // Arrange
             var productEvent = ProductCreatedEvent();
-            var context = Substitute.For<ConsumeContext<ProductCreatedEvent>>();
-            context.Message.Returns(productEvent);
-            context.CancellationToken.Returns(CancellationToken.None);
+            _context.Message.Returns(productEvent);
+            _context.CancellationToken.Returns(CancellationToken.None);
 
             _productRepository.Create(Arg.Any<Product>()).Returns(false);
 
             // Act & Assert
-            var ex = await Assert.ThrowsAsync<Exception>(() => _consumer.Consume(context));
+            var ex = await Assert.ThrowsAsync<Exception>(() => _consumer.Consume(_context));
             _logger.Received(1).LogError($"Failed to create product: {productEvent.id}");
         }
     }
