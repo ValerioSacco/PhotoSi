@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PhotoSi.OrdersService.Features.CreateOrder;
 using PhotoSi.OrdersService.Features.DeleteOrder;
 using PhotoSi.OrdersService.Features.GetOrder;
+using PhotoSi.OrdersService.Features.ListOrders;
 using PhotoSi.OrdersService.Features.UpdateOrder;
 
 namespace PhotoSi.OrdersService.Controllers
@@ -26,6 +27,19 @@ namespace PhotoSi.OrdersService.Controllers
             var order = await _mediator.Send(new GetOrderQuery(id), cancellationToken);
             return Ok(order);
         }
+
+
+        [HttpGet("/orders", Name = "List all orders")]
+        public async Task<IActionResult> List(
+            CancellationToken cancellationToken,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10
+        )
+        {
+            var products = await _mediator.Send(new ListOrdersQuery(pageNumber, pageSize), cancellationToken);
+            return Ok(products);
+        }
+
 
         [HttpPost("/orders", Name = "Create order")]
         public async Task<IActionResult> Create(
