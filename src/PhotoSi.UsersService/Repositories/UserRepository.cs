@@ -19,14 +19,9 @@ namespace PhotoSi.UsersService.Repositories
 
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        //private readonly UsersDbContext _dbContext;
-        //private readonly DbSet<User> _users;
-
         public UserRepository(UsersDbContext dbContext) 
             : base(dbContext)
         {
-            //_dbContext = dbContext;
-            //_users = dbContext.Users;
         }
 
         public override async Task<User?> GetByIdAsync(
@@ -61,36 +56,5 @@ namespace PhotoSi.UsersService.Repositories
                 .AsNoTracking()
                 .CountAsync(cancellationToken);
         }
-
-        //public bool Create(User user)
-        //{
-        //    var created = _users
-        //        .Add(user);
-
-        //    return created is not null ? true : false;
-        //}
-
-        //public bool Update(User user)
-        //{
-        //    var updated = _users
-        //        .Update(user);
-
-        //    return updated is not null ? true : false;
-        //}
-
-        //public bool Delete(Product product)
-        //{
-        //    var deleted = _users
-        //        .Remove(product);
-
-        //    return deleted is not null ? true : false;
-        //}
-
-        //public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        //{
-        //    return await _dbContext
-        //        .SaveChangesAsync(cancellationToken);
-        //}
-
     }
 }

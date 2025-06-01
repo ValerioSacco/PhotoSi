@@ -14,16 +14,10 @@ namespace PhotoSi.ProductsService.Repositories
 
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        //private readonly ProductsDbContext _dbContext;
-        //private readonly DbSet<Category> _categories;
-
         public CategoryRepository(ProductsDbContext dbContext) 
             : base(dbContext)
         {
-            //_dbContext = dbContext;
-            //_categories = dbContext.Categories;
         }
-
 
         public override async Task<Category?> GetByIdAsync(
             Guid id, 

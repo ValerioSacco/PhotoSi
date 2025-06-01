@@ -18,14 +18,9 @@ namespace PhotoSi.OrdersService.Repositories
 
     public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
-        //private readonly OrdersDbContext _dbContext;
-        //private readonly DbSet<Order> _orders;
-
         public OrderRepository(OrdersDbContext dbContext)
             : base(dbContext)
         {
-            //_dbContext = dbContext;
-            //_orders = dbContext.Orders;
         }
 
         public override async Task<Order?> GetByIdAsync(
@@ -64,36 +59,6 @@ namespace PhotoSi.OrdersService.Repositories
                 .AsNoTracking()
                 .CountAsync(cancellationToken);
         }
-
-        //public bool Create(Order order)
-        //{
-        //    var created = _orders
-        //        .Add(order);
-
-        //    return created is not null ? true : false;
-        //}
-
-        //public bool Update(Order order)
-        //{
-        //    var updated = _orders
-        //        .Update(order);
-
-        //    return updated is not null ? true : false;
-        //}
-
-        //public bool Delete(Order order)
-        //{
-        //    var deleted = _orders
-        //        .Remove(order);
-
-        //    return deleted is not null ? true : false;
-        //}
-
-        //public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        //{
-        //    return await _dbContext
-        //        .SaveChangesAsync(cancellationToken);
-        //}
 
     }
 }

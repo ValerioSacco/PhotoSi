@@ -15,17 +15,12 @@ namespace PhotoSi.OrdersService.Repositories
 
     public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
-        //private readonly OrdersDbContext _dbContext;
-        //private readonly DbSet<Product> _products;
-
         public ProductRepository(OrdersDbContext dbContext)
             : base(dbContext)
         {
-            //_dbContext = dbContext;
-            //_products = dbContext.Products;
         }
 
-        public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public override async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var product = await _dbSet
                 .AsNoTracking()
@@ -34,27 +29,5 @@ namespace PhotoSi.OrdersService.Repositories
 
             return product;
         }
-
-        public bool Create(Product product)
-        {
-            var created = _dbSet
-                .Add(product);
-
-            return created is not null ? true : false;
-        }
-
-        //public bool Update(Product product)
-        //{
-        //    var updated = _products
-        //        .Update(product);
-
-        //    return updated is not null ? true : false;
-        //}
-
-        //public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        //{
-        //    return await _dbContext
-        //        .SaveChangesAsync(cancellationToken);
-        //}
     }
 }
