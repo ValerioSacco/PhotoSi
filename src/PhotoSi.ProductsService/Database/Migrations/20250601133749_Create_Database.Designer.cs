@@ -11,7 +11,7 @@ using PhotoSi.ProductsService.Database;
 namespace PhotoSi.ProductsService.Database.Migrations
 {
     [DbContext(typeof(ProductsDbContext))]
-    [Migration("20250601123515_Create_Database")]
+    [Migration("20250601133749_Create_Database")]
     partial class Create_Database
     {
         /// <inheritdoc />
@@ -67,6 +67,20 @@ namespace PhotoSi.ProductsService.Database.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Biglietti auguri per ricorrenze",
                             Name = "Biglietti"
+                        },
+                        new
+                        {
+                            Id = new Guid("c4e56760-ad5d-4f64-b795-41fb38e32533"),
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Calendari personalizzati",
+                            Name = "Calendari"
+                        },
+                        new
+                        {
+                            Id = new Guid("a6f00d5a-d774-4f5b-b1bb-4cefec0a580e"),
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Poster di alta qualità",
+                            Name = "Poster"
                         });
                 });
 

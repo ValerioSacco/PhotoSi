@@ -57,7 +57,9 @@ namespace PhotoSi.ProductsService.Database.Migrations
                 {
                     { new Guid("1c3e24c8-b0c5-4c9b-8b28-f5c5ec2c819a"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Biglietti auguri per ricorrenze", "Biglietti" },
                     { new Guid("59cf0ad7-89a8-4dd5-83da-9cb50608080b"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Gadget per il tempo libero", "Gadgets" },
-                    { new Guid("b3eaf4bd-2e57-4041-8cf0-6a19a55c9fb9"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Stampa semplice di una foto", "Stampe" }
+                    { new Guid("a6f00d5a-d774-4f5b-b1bb-4cefec0a580e"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Poster di alta qualità", "Poster" },
+                    { new Guid("b3eaf4bd-2e57-4041-8cf0-6a19a55c9fb9"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Stampa semplice di una foto", "Stampe" },
+                    { new Guid("c4e56760-ad5d-4f64-b795-41fb38e32533"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Calendari personalizzati", "Calendari" }
                 });
 
             migrationBuilder.InsertData(
