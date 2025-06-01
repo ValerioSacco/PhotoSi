@@ -1,11 +1,15 @@
 ﻿using FluentValidation;
 
-namespace PhotoSi.UsersService.Features.CreateUser
+namespace PhotoSi.UsersService.Features.UpdateUser
 {
     public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {
         public UpdateUserCommandValidator()
         {
+            RuleFor(command => command.userId)
+                .NotEmpty()
+                .WithMessage("User id must not be an empty GUID.");
+
             RuleFor(command => command.email)
                 .NotEmpty()
                 .WithMessage("Email is required.")

@@ -6,26 +6,33 @@ using PhotoSi.UsersService.Models;
 using PhotoSi.UsersService.Repositories;
 using PhotoSi.UsersService.Services;
 
-namespace PhotoSi.UsersService.Features.CreateUser
+namespace PhotoSi.UsersService.Features.UpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAddressChecker _addressChecker;
-        private readonly IPublishEndpoint _publishEndpoint;
+        //private readonly IPublishEndpoint _publishEndpoint;
 
         public UpdateUserCommandHandler(
             IUserRepository userRepository,
-            IAddressChecker addressChecker,
-            IPublishEndpoint publishEndpoint)
+            IAddressChecker addressChecker
+            /*IPublishEndpoint publishEndpoint*/)
         {
             _userRepository = userRepository;
             _addressChecker = addressChecker;
-            _publishEndpoint = publishEndpoint;
+            //_publishEndpoint = publishEndpoint;
         }
 
         public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
+            var user = await _userRepository.GetByIdAsync(request.id, cancellationToken);
+
+            if (user is null)
+            {
+                throw new NotFoundException($"User with id {request.id} does not exist.");
+            }
+
             var addressValid = await _addressChecker.IsAddressValidAsync(
                 new ShipmentAddress()
                 {
@@ -42,44 +49,40 @@ namespace PhotoSi.UsersService.Features.CreateUser
                 throw new BusinessRuleException("Invalid shipment address provided. Check address book and pick an existing address.");
             }
 
-            var user = new User()
+            user.UserName = request.username;
+            user.FirstName = request.firstname;
+            user.LastName = request.lastname;
+            user.Email = request.email;
+            user.PhoneNumber = request.phoneNumber;
+            user.ProfilePictureUrl = request.profilePictureUrl;
+            user.ShipmentAddress = new ShipmentAddress()
             {
-                Id = Guid.NewGuid(),
-                UserName = request.username,
-                FirstName = request.firstname,
-                LastName = request.lastname,
-                Email = request.email,
-                PhoneNumber = request.phoneNumber,
-                ProfilePictureUrl = request.profilePictureUrl,
-                ShipmentAddress = new ShipmentAddress()
-                {
-                    Country = request.shipmentAddress.country,
-                    City = request.shipmentAddress.city,
-                    PostalCode = request.shipmentAddress.postalCode,
-                    Street = request.shipmentAddress.street
-                }
+                Country = request.shipmentAddress.country,
+                City = request.shipmentAddress.city,
+                PostalCode = request.shipmentAddress.postalCode,
+                Street = request.shipmentAddress.street
             };
 
-            if (_userRepository.Create(user))
+            if (_userRepository.Update(user))
             {
                 //I should send the event to an outbox
-                await _publishEndpoint.Publish(
-                    new UserCreatedEvent(
-                        user.Id,
-                        user.FirstName,
-                        user.LastName,
-                        user.ShipmentAddress.Country,
-                        user.ShipmentAddress.City,
-                        user.ShipmentAddress.Street,
-                        user.ShipmentAddress.PostalCode
-                    ), cancellationToken);
+                //await _publishEndpoint.Publish(
+                //    new UserCreatedEvent(
+                //        user.Id,
+                //        user.FirstName,
+                //        user.LastName,
+                //        user.ShipmentAddress.Country,
+                //        user.ShipmentAddress.City,
+                //        user.ShipmentAddress.Street,
+                //        user.ShipmentAddress.PostalCode
+                //    ), cancellationToken);
                 await _userRepository
                     .SaveChangesAsync(cancellationToken);
                 return user.Id;
             }
             else
             {
-                throw new Exception("Failed to create user");
+                throw new Exception("Failed to update user");
             }
 
         }

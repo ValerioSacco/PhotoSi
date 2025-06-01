@@ -10,6 +10,7 @@ namespace PhotoSi.UsersService.Repositories
     {
         Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         bool Create(User user);
+        bool Update(User user);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
@@ -65,13 +66,13 @@ namespace PhotoSi.UsersService.Repositories
             return created is not null ? true : false;
         }
 
-        //public bool Update(Product product)
-        //{
-        //    var updated = _users
-        //        .Update(product);
+        public bool Update(User user)
+        {
+            var updated = _users
+                .Update(user);
 
-        //    return updated is not null ? true : false;
-        //}
+            return updated is not null ? true : false;
+        }
 
         //public bool Delete(Product product)
         //{

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhotoSi.UsersService.Features.CreateUser;
 using PhotoSi.UsersService.Features.GetUser;
+using PhotoSi.UsersService.Features.UpdateUser;
 
 namespace PhotoSi.UsersService.Controllers
 {
@@ -30,7 +31,7 @@ namespace PhotoSi.UsersService.Controllers
         [HttpPost("/users", Name = "Create new user")]
         public async Task<IActionResult> Create(
             CancellationToken cancellationToken, 
-            [FromBody] CreateUserCommand command
+            [FromBody] UpdateUserCommand command
         )
         {
             var userId = await _mediator.Send(command, cancellationToken);

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace PhotoSi.UsersService.Features.CreateUser
+namespace PhotoSi.UsersService.Features.UpdateUser
 {
     public record ShipmentAddressRequest(
         string country, 
@@ -10,6 +10,7 @@ namespace PhotoSi.UsersService.Features.CreateUser
     );
 
     public record UpdateUserCommand(
+        Guid id,
         string username, 
         string firstname, 
         string lastname, 
