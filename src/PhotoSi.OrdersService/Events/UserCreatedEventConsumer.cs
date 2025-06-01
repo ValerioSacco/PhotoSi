@@ -8,10 +8,15 @@ namespace PhotoSi.OrdersService.Events
     public class UserCreatedEventConsumer : IConsumer<UserCreatedEvent>
     {
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<UserCreatedEventConsumer> _logger;
 
-        public UserCreatedEventConsumer(IUserRepository userRepository)
+        public UserCreatedEventConsumer(
+            IUserRepository userRepository, 
+            ILogger<UserCreatedEventConsumer> logger
+        )
         {
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task Consume(ConsumeContext<UserCreatedEvent> context)
@@ -36,9 +41,11 @@ namespace PhotoSi.OrdersService.Events
             {
                 await _userRepository
                     .SaveChangesAsync(context.CancellationToken);
+                _logger.LogInformation($"User created successfully: {user.Id}");
             }
             else
             {
+                _logger.LogError($"Failed to create user: {user.Id}");
                 throw new Exception("Failed to create user in the database.");
             }
         }

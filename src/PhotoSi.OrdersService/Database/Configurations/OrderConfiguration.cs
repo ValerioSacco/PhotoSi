@@ -16,8 +16,8 @@ namespace PhotoSi.ProductsService.Database.Configurations
                 .IsRequired()
                 .HasMaxLength(3);
 
-            builder.Property(p => p.Version)
-                .IsConcurrencyToken();
+            //builder.Property(p => p.Version)
+            //    .IsConcurrencyToken();
 
             builder.HasMany(o => o.OrderLines)
                 .WithOne(ol => ol.Order)

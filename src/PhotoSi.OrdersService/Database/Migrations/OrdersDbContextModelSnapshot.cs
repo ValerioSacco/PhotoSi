@@ -34,10 +34,6 @@ namespace PhotoSi.OrdersService.Database.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Version")
-                        .IsConcurrencyToken()
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -50,8 +46,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Id = new Guid("186aa5d6-77dd-4b90-bc69-b487ba9c3893"),
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Currency = "EUR",
-                            UserId = new Guid("0d4bdc20-95dd-4fe3-98b3-ffac3eadae6d"),
-                            Version = 1
+                            UserId = new Guid("0d4bdc20-95dd-4fe3-98b3-ffac3eadae6d")
                         });
                 });
 
@@ -77,9 +72,6 @@ namespace PhotoSi.OrdersService.Database.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
@@ -96,8 +88,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Notes = "First order line",
                             OrderId = new Guid("186aa5d6-77dd-4b90-bc69-b487ba9c3893"),
                             ProductId = new Guid("ccbd7f1e-be07-4e8e-ab99-9ddc97184ebd"),
-                            Quantity = 2,
-                            Version = 1
+                            Quantity = 2
                         },
                         new
                         {
@@ -106,8 +97,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Notes = "Second order line",
                             OrderId = new Guid("186aa5d6-77dd-4b90-bc69-b487ba9c3893"),
                             ProductId = new Guid("7da4e09c-70a4-49e9-8079-e2c303dc13a5"),
-                            Quantity = 5,
-                            Version = 1
+                            Quantity = 5
                         });
                 });
 
@@ -141,9 +131,6 @@ namespace PhotoSi.OrdersService.Database.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.ToTable("Products", (string)null);
@@ -157,8 +144,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Description = "Stampa di una foto in formato 10x15 cm",
                             IsAvailable = true,
                             Name = "Stampa Foto 10x15",
-                            Price = 10.50m,
-                            Version = 1
+                            Price = 10.50m
                         },
                         new
                         {
@@ -168,8 +154,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Description = "Tazza con stampa personalizzata",
                             IsAvailable = true,
                             Name = "Tazza Personalizzata",
-                            Price = 15.00m,
-                            Version = 1
+                            Price = 15.00m
                         },
                         new
                         {
@@ -179,8 +164,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Description = "Biglietto di auguri personalizzato per ogni occasione",
                             IsAvailable = true,
                             Name = "Biglietto di Auguri",
-                            Price = 5.00m,
-                            Version = 1
+                            Price = 5.00m
                         },
                         new
                         {
@@ -190,8 +174,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Description = "Calendario personalizzato da tavolo",
                             IsAvailable = true,
                             Name = "Calendario da Tavolo",
-                            Price = 20.00m,
-                            Version = 1
+                            Price = 20.00m
                         },
                         new
                         {
@@ -201,8 +184,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Description = "Poster di grandi dimensioni per decorare le pareti",
                             IsAvailable = true,
                             Name = "Poster 50x70",
-                            Price = 30.00m,
-                            Version = 1
+                            Price = 30.00m
                         },
                         new
                         {
@@ -212,8 +194,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Description = "Album fotografico personalizzato per conservare i tuoi ricordi",
                             IsAvailable = true,
                             Name = "Album Fotografico",
-                            Price = 25.00m,
-                            Version = 1
+                            Price = 25.00m
                         },
                         new
                         {
@@ -223,8 +204,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             Description = "Stampa di alta qualità su tela per un effetto artistico",
                             IsAvailable = true,
                             Name = "Stampa su Tela",
-                            Price = 45.00m,
-                            Version = 1
+                            Price = 45.00m
                         });
                 });
 
@@ -252,9 +232,6 @@ namespace PhotoSi.OrdersService.Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
@@ -266,8 +243,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Mario",
                             IsAvailable = true,
-                            LastName = "Rossi",
-                            Version = 1
+                            LastName = "Rossi"
                         },
                         new
                         {
@@ -275,8 +251,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Luca",
                             IsAvailable = true,
-                            LastName = "Bianchi",
-                            Version = 1
+                            LastName = "Bianchi"
                         },
                         new
                         {
@@ -284,8 +259,7 @@ namespace PhotoSi.OrdersService.Database.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Giulia",
                             IsAvailable = true,
-                            LastName = "Verdi",
-                            Version = 1
+                            LastName = "Verdi"
                         });
                 });
 

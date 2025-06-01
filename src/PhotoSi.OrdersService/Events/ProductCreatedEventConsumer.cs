@@ -8,10 +8,15 @@ namespace PhotoSi.OrdersService.Events
     public class ProductCreatedEventConsumer : IConsumer<ProductCreatedEvent>
     {
         private readonly IProductRepository _productRepository;
+        private readonly ILogger<ProductCreatedEventConsumer> _logger;
 
-        public ProductCreatedEventConsumer(IProductRepository productRepository)
+        public ProductCreatedEventConsumer(
+            IProductRepository productRepository, 
+            ILogger<ProductCreatedEventConsumer> logger
+        )
         {
             _productRepository = productRepository;
+            _logger = logger;
         }
 
         public async Task Consume(ConsumeContext<ProductCreatedEvent> context)
@@ -31,9 +36,11 @@ namespace PhotoSi.OrdersService.Events
             {
                 await _productRepository
                     .SaveChangesAsync(context.CancellationToken);
+                _logger.LogInformation($"Product created successfully: {product.Id}");
             }
             else
             {
+                _logger.LogError($"Failed to create product: {product.Id}");
                 throw new Exception("Failed to create product in the database.");
             }
         }
