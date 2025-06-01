@@ -12,16 +12,16 @@ namespace PhotoSi.UsersService.Features.UpdateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IAddressChecker _addressChecker;
-        //private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         public UpdateUserCommandHandler(
             IUserRepository userRepository,
-            IAddressChecker addressChecker
-            /*IPublishEndpoint publishEndpoint*/)
+            IAddressChecker addressChecker,
+            IPublishEndpoint publishEndpoint)
         {
             _userRepository = userRepository;
             _addressChecker = addressChecker;
-            //_publishEndpoint = publishEndpoint;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -65,19 +65,20 @@ namespace PhotoSi.UsersService.Features.UpdateUser
 
             if (_userRepository.Update(user))
             {
-                //I should send the event to an outbox
-                //await _publishEndpoint.Publish(
-                //    new UserCreatedEvent(
-                //        user.Id,
-                //        user.FirstName,
-                //        user.LastName,
-                //        user.ShipmentAddress.Country,
-                //        user.ShipmentAddress.City,
-                //        user.ShipmentAddress.Street,
-                //        user.ShipmentAddress.PostalCode
-                //    ), cancellationToken);
                 await _userRepository
                     .SaveChangesAsync(cancellationToken);
+                //I should send the event to an outbox before saving the changes
+                await _publishEndpoint.Publish(
+                    new UserUpdatedEvent(
+                        user.Id,
+                        user.FirstName,
+                        user.LastName,
+                        user.ShipmentAddress.Country,
+                        user.ShipmentAddress.City,
+                        user.ShipmentAddress.Street,
+                        user.ShipmentAddress.PostalCode
+                    ), cancellationToken);
+
                 return user.Id;
             }
             else

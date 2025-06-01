@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PhotoSi.UsersService.Features.CreateUser;
+using PhotoSi.UsersService.Features.DeleteUser;
 using PhotoSi.UsersService.Features.GetUser;
+using PhotoSi.UsersService.Features.ListUsers;
 using PhotoSi.UsersService.Features.UpdateUser;
 
 namespace PhotoSi.UsersService.Controllers
@@ -27,10 +29,20 @@ namespace PhotoSi.UsersService.Controllers
             return Ok(user);
         }
 
+        [HttpGet("/users", Name = "List all users")]
+        public async Task<IActionResult> List(
+            CancellationToken cancellationToken,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10
+        )
+        {
+            var users = await _mediator.Send(new ListUsersQuery(pageNumber, pageSize), cancellationToken);
+            return Ok(users);
+        }
 
         [HttpPost("/users", Name = "Create new user")]
         public async Task<IActionResult> Create(
-            CancellationToken cancellationToken, 
+            CancellationToken cancellationToken,
             [FromBody] CreateUserCommand command
         )
         {
@@ -49,12 +61,22 @@ namespace PhotoSi.UsersService.Controllers
             [FromBody] UpdateUserCommand command
         )
         {
-            var userId = await _mediator.Send(command with { id = id}, cancellationToken);
+            var userId = await _mediator.Send(command with { id = id }, cancellationToken);
             return AcceptedAtRoute(
                 "Get one user by id",
                 new { id = userId },
                 new { userId = userId }
             );
+        }
+
+        [HttpDelete("/users/{id}", Name = "Delete one user")]
+        public async Task<IActionResult> Delete(
+            CancellationToken cancellationToken,
+            Guid id
+        )
+        {
+            await _mediator.Send(new DeleteUserCommand(id), cancellationToken);
+            return NoContent();
         }
     }
 }

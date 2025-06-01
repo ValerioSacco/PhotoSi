@@ -9,8 +9,11 @@ namespace PhotoSi.UsersService.Repositories
     public interface IUserRepository
     {
         Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task<List<User>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
+        Task<int> CountAsync(CancellationToken cancellationToken);
         bool Create(User user);
         bool Update(User user);
+        bool Delete(User user);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
@@ -39,25 +42,25 @@ namespace PhotoSi.UsersService.Repositories
             return user;
         }
 
-        //public async Task<List<Product>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
-        //{
-        //    var products = await _users
-        //        .AsNoTracking()
-        //        .OrderBy(p => p.Id)
-        //        .Skip((pageNumber - 1) * pageSize)
-        //        .Take(pageSize)
-        //        .Include(p => p.Category)
-        //        .ToListAsync(cancellationToken);
+        public async Task<List<User>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        {
+            var users = await _dbSet
+                .AsNoTracking()
+                .OrderBy(u => u.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Include(u => u.ShipmentAddress)
+                .ToListAsync(cancellationToken);
 
-        //    return products;
-        //}
+            return users;
+        }
 
-        //public async Task<int> CountAsync(CancellationToken cancellationToken)
-        //{
-        //    return await _users
-        //        .AsNoTracking()
-        //        .CountAsync(cancellationToken);
-        //}
+        public async Task<int> CountAsync(CancellationToken cancellationToken)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .CountAsync(cancellationToken);
+        }
 
         //public bool Create(User user)
         //{
