@@ -2,7 +2,7 @@
 
 namespace PhotoSi.UsersService.Features.CreateUser
 {
-    public record ShipmentAddressRequest(
+    public record CreateShipmentAddressRequest(
         string country, 
         string city, 
         string postalCode, 
@@ -16,6 +16,6 @@ namespace PhotoSi.UsersService.Features.CreateUser
         string email,
         string profilePictureUrl,
         string phoneNumber,
-        ShipmentAddressRequest shipmentAddress
+        CreateShipmentAddressRequest shipmentAddress
     ) : IRequest<Guid>;
 }

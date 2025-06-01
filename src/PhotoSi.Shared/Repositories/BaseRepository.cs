@@ -43,7 +43,7 @@ namespace PhotoSi.Shared.Repositories
 
         public bool Delete(T entity)
         {
-            var removed = _dbSet.Update(entity);
+            var removed = _dbSet.Remove(entity);
             return removed is not null ? true : false;
         }
 

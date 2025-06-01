@@ -35,7 +35,7 @@ namespace PhotoSi.UsersService.UnitTests.Features
                 "test@example.com",
                 "1234567890",
                 "http://example.com/pic.jpg",
-                new ShipmentAddressRequest
+                new CreateShipmentAddressRequest
                 (
                     "Country",
                     "City",

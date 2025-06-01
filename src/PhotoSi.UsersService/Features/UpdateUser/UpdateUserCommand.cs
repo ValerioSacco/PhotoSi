@@ -2,7 +2,7 @@
 
 namespace PhotoSi.UsersService.Features.UpdateUser
 {
-    public record ShipmentAddressRequest(
+    public record UpdateShipmentAddressRequest(
         string country, 
         string city, 
         string postalCode, 
@@ -17,6 +17,6 @@ namespace PhotoSi.UsersService.Features.UpdateUser
         string email,
         string profilePictureUrl,
         string phoneNumber,
-        ShipmentAddressRequest shipmentAddress
+        UpdateShipmentAddressRequest shipmentAddress
     ) : IRequest<Guid>;
 }

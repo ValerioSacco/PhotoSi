@@ -4,7 +4,7 @@ using PhotoSi.Shared.Events;
 
 namespace PhotoSi.OrdersService.Events
 {
-    public class UserUpdatedEventConsumer
+    public class UserUpdatedEventConsumer : IConsumer<UserUpdatedEvent>
     {
         private readonly IUserRepository _userRepository;
         private readonly ILogger<UserUpdatedEventConsumer> _logger;
