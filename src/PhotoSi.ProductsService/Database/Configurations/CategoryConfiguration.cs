@@ -22,8 +22,8 @@ namespace PhotoSi.ProductsService.Database.Configurations
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(c => c.Version)
-                .IsConcurrencyToken();
+            //builder.Property(p => p.Version)
+            //    .IsConcurrencyToken();
 
             builder.HasMany(c => c.Products);
 

@@ -24,7 +24,7 @@ namespace PhotoSi.Shared.Middleware
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validation failed");
+                _logger.LogWarning("Validation failed");
                 context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
                 var errorResponse = new
                 {
@@ -35,7 +35,7 @@ namespace PhotoSi.Shared.Middleware
             }
             catch (NotFoundException ex)
             {
-                _logger.LogWarning(ex, "Entity not found");
+                _logger.LogWarning("Entity not found");
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 var errorResponse = new
                 {
@@ -46,7 +46,7 @@ namespace PhotoSi.Shared.Middleware
             }
             catch (BusinessRuleException ex)
             {
-                _logger.LogWarning(ex, "Business rule violation");
+                _logger.LogWarning("Business rule violation");
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 var errorResponse = new
                 {
