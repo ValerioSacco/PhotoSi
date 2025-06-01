@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhotoSi.AddressBookService.Database;
+using PhotoSi.AddressBookService.Models;
 
 namespace PhotoSi.AddressBookService.Controllers
 {
@@ -58,14 +59,16 @@ namespace PhotoSi.AddressBookService.Controllers
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
 
-            return Ok(new
-            {
+            return Ok(new ListAddressesResponse(
                 totalCount,
                 pageNumber,
                 pageSize,
                 addresses
-            });
+            ));
         }
 
     }
+
+    public record ListAddressesResponse(int totalCount, int pageNumber, int pageSize, IList<Address> addresses);
+
 }
