@@ -58,7 +58,6 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
                         category.Name
                     ), cancellationToken);
 
-
                 return product.Id;
             }
             else

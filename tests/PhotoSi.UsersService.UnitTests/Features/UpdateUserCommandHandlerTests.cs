@@ -18,7 +18,11 @@ namespace PhotoSi.UsersService.UnitTests.Features
 
         public UpdateUserCommandHandlerTests()
         {
-            _handler = new UpdateUserCommandHandler(_userRepository, _addressChecker, _publishEndpoint);
+            _handler = new UpdateUserCommandHandler(
+                _userRepository, 
+                _addressChecker, 
+                _publishEndpoint
+            );
         }
 
         private static UpdateUserCommand CreateValidCommand(Guid userId)

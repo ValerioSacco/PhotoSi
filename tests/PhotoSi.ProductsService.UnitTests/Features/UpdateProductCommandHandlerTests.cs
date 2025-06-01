@@ -1,7 +1,9 @@
-﻿using NSubstitute;
+﻿using MassTransit;
+using NSubstitute;
 using PhotoSi.ProductsService.Features.UpdateProduct;
 using PhotoSi.ProductsService.Models;
 using PhotoSi.ProductsService.Repositories;
+using PhotoSi.Shared.Events;
 using PhotoSi.Shared.Exceptions;
 
 namespace PhotoSi.ProductsService.UnitTests.Features
@@ -11,10 +13,15 @@ namespace PhotoSi.ProductsService.UnitTests.Features
         private readonly UpdateProductCommandHandler _handler;
         private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
         private readonly ICategoryRepository _categoryRepository = Substitute.For<ICategoryRepository>();
+        private readonly IPublishEndpoint _publishEndpoint = Substitute.For<IPublishEndpoint>();
 
         public UpdateProductCommandHandlerTests()
         {
-            _handler = new UpdateProductCommandHandler(_productRepository, _categoryRepository);
+            _handler = new UpdateProductCommandHandler(
+                _productRepository, 
+                _categoryRepository, 
+                _publishEndpoint
+            );
         }
 
         private static UpdateProductCommand CreateValidCommand(Guid id, Guid categoryId)
@@ -133,6 +140,39 @@ namespace PhotoSi.ProductsService.UnitTests.Features
 
             // Assert
             await _productRepository.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
+        }
+
+
+        [Fact]
+        public async Task Handle_Publishes_WhenProductUpdatedSuccessfully()
+        {
+            // Arrange
+            var command = CreateValidCommand(Guid.NewGuid(), Guid.NewGuid());
+            var category = new Category { Id = command.categoryId, Name = "Cat" };
+            var product = new Product { Id = command.id, Name = "Old", Description = "Old", Price = 1, ImageUrl = "old", CategoryId = category.Id };
+
+            _categoryRepository.GetByIdAsync(command.categoryId, Arg.Any<CancellationToken>())
+                .Returns(category);
+
+            _productRepository.GetByIdAsync(command.id, Arg.Any<CancellationToken>())
+                .Returns(product);
+
+            _productRepository.Update(product).Returns(true);
+            _productRepository.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            await _publishEndpoint.Received(1).Publish(
+                Arg.Is<ProductUpdatedEvent>(e =>
+                    e.id == command.id &&
+                    e.name == command.name &&
+                    e.description == command.description &&
+                    e.price == command.price &&
+                    e.categoryName == category.Name
+                ),
+                Arg.Any<CancellationToken>());
         }
     }
 }
