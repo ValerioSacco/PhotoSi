@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhotoSi.OrdersService.Database;
 using PhotoSi.OrdersService.Models;
+using PhotoSi.Shared.Repositories;
 
 namespace PhotoSi.OrdersService.Repositories
 {
@@ -15,23 +16,24 @@ namespace PhotoSi.OrdersService.Repositories
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
-        private readonly OrdersDbContext _dbContext;
-        private readonly DbSet<Order> _orders;
+        //private readonly OrdersDbContext _dbContext;
+        //private readonly DbSet<Order> _orders;
 
         public OrderRepository(OrdersDbContext dbContext)
+            : base(dbContext)
         {
-            _dbContext = dbContext;
-            _orders = dbContext.Orders;
+            //_dbContext = dbContext;
+            //_orders = dbContext.Orders;
         }
 
-        public async Task<Order?> GetByIdAsync(
+        public override async Task<Order?> GetByIdAsync(
             Guid id, 
             CancellationToken cancellationToken
         )
         {
-            var order = await _orders
+            var order = await _dbSet
                 .AsNoTracking()
                 .Include(o => o.OrderLines)
                 .ThenInclude(ol => ol.Product)
@@ -43,7 +45,7 @@ namespace PhotoSi.OrdersService.Repositories
 
         public async Task<List<Order>> ListAllAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
-            var orders = await _orders
+            var orders = await _dbSet
                 .AsNoTracking()
                 .OrderBy(p => p.Id)
                 .Skip((pageNumber - 1) * pageSize)
@@ -58,40 +60,40 @@ namespace PhotoSi.OrdersService.Repositories
 
         public async Task<int> CountAsync(CancellationToken cancellationToken)
         {
-            return await _orders
+            return await _dbSet
                 .AsNoTracking()
                 .CountAsync(cancellationToken);
         }
 
-        public bool Create(Order order)
-        {
-            var created = _orders
-                .Add(order);
+        //public bool Create(Order order)
+        //{
+        //    var created = _orders
+        //        .Add(order);
 
-            return created is not null ? true : false;
-        }
+        //    return created is not null ? true : false;
+        //}
 
-        public bool Update(Order order)
-        {
-            var updated = _orders
-                .Update(order);
+        //public bool Update(Order order)
+        //{
+        //    var updated = _orders
+        //        .Update(order);
 
-            return updated is not null ? true : false;
-        }
+        //    return updated is not null ? true : false;
+        //}
 
-        public bool Delete(Order order)
-        {
-            var deleted = _orders
-                .Remove(order);
+        //public bool Delete(Order order)
+        //{
+        //    var deleted = _orders
+        //        .Remove(order);
 
-            return deleted is not null ? true : false;
-        }
+        //    return deleted is not null ? true : false;
+        //}
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            return await _dbContext
-                .SaveChangesAsync(cancellationToken);
-        }
+        //public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        //{
+        //    return await _dbContext
+        //        .SaveChangesAsync(cancellationToken);
+        //}
 
     }
 }

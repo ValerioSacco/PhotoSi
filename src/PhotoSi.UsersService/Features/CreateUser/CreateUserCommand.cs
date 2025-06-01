@@ -9,7 +9,7 @@ namespace PhotoSi.UsersService.Features.CreateUser
         string street
     );
 
-    public record UpdateUserCommand(
+    public record CreateUserCommand(
         string username, 
         string firstname, 
         string lastname, 

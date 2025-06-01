@@ -1,35 +1,36 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhotoSi.ProductsService.Database;
 using PhotoSi.ProductsService.Models;
+using PhotoSi.Shared.Repositories;
 
 namespace PhotoSi.ProductsService.Repositories
 {
     public interface ICategoryRepository
     {
         Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
         Task<List<Category>> ListAllAsync(CancellationToken cancellationToken);
     }
 
 
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        private readonly ProductsDbContext _dbContext;
-        private readonly DbSet<Category> _categories;
+        //private readonly ProductsDbContext _dbContext;
+        //private readonly DbSet<Category> _categories;
 
-        public CategoryRepository(ProductsDbContext dbContext)
+        public CategoryRepository(ProductsDbContext dbContext) 
+            : base(dbContext)
         {
-            _dbContext = dbContext;
-            _categories = dbContext.Categories;
+            //_dbContext = dbContext;
+            //_categories = dbContext.Categories;
         }
 
 
-        public async Task<Category?> GetByIdAsync(
+        public override async Task<Category?> GetByIdAsync(
             Guid id, 
             CancellationToken cancellationToken
         )
         {
-            var category = await _categories
+            var category = await _dbSet
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
@@ -38,7 +39,7 @@ namespace PhotoSi.ProductsService.Repositories
 
         public async Task<List<Category>> ListAllAsync(CancellationToken cancellationToken)
         {
-            var categories = await _categories
+            var categories = await _dbSet
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
 

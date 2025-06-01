@@ -31,7 +31,7 @@ namespace PhotoSi.UsersService.Controllers
         [HttpPost("/users", Name = "Create new user")]
         public async Task<IActionResult> Create(
             CancellationToken cancellationToken, 
-            [FromBody] UpdateUserCommand command
+            [FromBody] CreateUserCommand command
         )
         {
             var userId = await _mediator.Send(command, cancellationToken);

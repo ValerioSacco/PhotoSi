@@ -6,7 +6,7 @@ namespace PhotoSi.UsersService.Features.UpdateUser
     {
         public UpdateUserCommandValidator()
         {
-            RuleFor(command => command.userId)
+            RuleFor(command => command.id)
                 .NotEmpty()
                 .WithMessage("User id must not be an empty GUID.");
 

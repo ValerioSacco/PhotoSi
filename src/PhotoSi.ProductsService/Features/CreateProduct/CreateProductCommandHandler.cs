@@ -46,7 +46,9 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
 
             if (_productRepository.Create(product))
             {
-                //I should send the event to an outbox
+                await _productRepository
+                    .SaveChangesAsync(cancellationToken);
+                //I should send the event to an outbox before saving the changes
                 await _publishEndpoint.Publish(
                     new ProductCreatedEvent(
                         product.Id,
@@ -56,8 +58,6 @@ namespace PhotoSi.ProductsService.Features.CreateProduct
                         category.Name
                     ), cancellationToken);
 
-                await _productRepository
-                    .SaveChangesAsync(cancellationToken);
 
                 return product.Id;
             }

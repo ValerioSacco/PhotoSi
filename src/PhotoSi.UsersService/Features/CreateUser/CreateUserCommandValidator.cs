@@ -2,7 +2,7 @@
 
 namespace PhotoSi.UsersService.Features.CreateUser
 {
-    public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
+    public class UpdateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {
         public UpdateUserCommandValidator()
         {

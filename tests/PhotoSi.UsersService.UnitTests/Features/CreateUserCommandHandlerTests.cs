@@ -3,7 +3,6 @@ using NSubstitute;
 using PhotoSi.Shared.Events;
 using PhotoSi.Shared.Exceptions;
 using PhotoSi.UsersService.Features.CreateUser;
-using PhotoSi.UsersService.Features.UpdateUser;
 using PhotoSi.UsersService.Models;
 using PhotoSi.UsersService.Repositories;
 using PhotoSi.UsersService.Services;
@@ -12,7 +11,7 @@ namespace PhotoSi.UsersService.UnitTests.Features
 {
     public class CreateUserCommandHandlerTests
     {
-        private readonly UpdateUserCommandHandler _handler;
+        private readonly CreateUserCommandHandler _handler;
         private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
         private readonly IAddressChecker _addressChecker = Substitute.For<IAddressChecker>();
         private readonly IPublishEndpoint _publishEndpoint = Substitute.For<IPublishEndpoint>();
@@ -26,9 +25,9 @@ namespace PhotoSi.UsersService.UnitTests.Features
             );
         }
 
-        private UpdateUserCommand CreateValidCommand()
+        private CreateUserCommand CreateValidCommand()
         {
-            return new UpdateUserCommand
+            return new CreateUserCommand
             (
                 "testuser",
                 "Test",

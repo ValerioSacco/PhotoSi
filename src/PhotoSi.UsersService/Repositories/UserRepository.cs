@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PhotoSi.Shared.Repositories;
 using PhotoSi.UsersService.Database;
 using PhotoSi.UsersService.Models;
-
 
 namespace PhotoSi.UsersService.Repositories
 {
@@ -14,23 +14,24 @@ namespace PhotoSi.UsersService.Repositories
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        private readonly UsersDbContext _dbContext;
-        private readonly DbSet<User> _users;
+        //private readonly UsersDbContext _dbContext;
+        //private readonly DbSet<User> _users;
 
-        public UserRepository(UsersDbContext dbContext)
+        public UserRepository(UsersDbContext dbContext) 
+            : base(dbContext)
         {
-            _dbContext = dbContext;
-            _users = dbContext.Users;
+            //_dbContext = dbContext;
+            //_users = dbContext.Users;
         }
 
-        public async Task<User?> GetByIdAsync(
+        public override async Task<User?> GetByIdAsync(
             Guid id,
             CancellationToken cancellationToken
         )
         {
-            var user = await _users
+            var user = await _dbSet
                 .AsNoTracking()
                 .Include(u => u.ShipmentAddress)
                 .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
@@ -58,21 +59,21 @@ namespace PhotoSi.UsersService.Repositories
         //        .CountAsync(cancellationToken);
         //}
 
-        public bool Create(User user)
-        {
-            var created = _users
-                .Add(user);
+        //public bool Create(User user)
+        //{
+        //    var created = _users
+        //        .Add(user);
 
-            return created is not null ? true : false;
-        }
+        //    return created is not null ? true : false;
+        //}
 
-        public bool Update(User user)
-        {
-            var updated = _users
-                .Update(user);
+        //public bool Update(User user)
+        //{
+        //    var updated = _users
+        //        .Update(user);
 
-            return updated is not null ? true : false;
-        }
+        //    return updated is not null ? true : false;
+        //}
 
         //public bool Delete(Product product)
         //{
@@ -82,11 +83,11 @@ namespace PhotoSi.UsersService.Repositories
         //    return deleted is not null ? true : false;
         //}
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            return await _dbContext
-                .SaveChangesAsync(cancellationToken);
-        }
+        //public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        //{
+        //    return await _dbContext
+        //        .SaveChangesAsync(cancellationToken);
+        //}
 
     }
 }

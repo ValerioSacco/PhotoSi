@@ -8,13 +8,13 @@ using PhotoSi.UsersService.Services;
 
 namespace PhotoSi.UsersService.Features.CreateUser
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Guid>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAddressChecker _addressChecker;
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public UpdateUserCommandHandler(
+        public CreateUserCommandHandler(
             IUserRepository userRepository,
             IAddressChecker addressChecker,
             IPublishEndpoint publishEndpoint)
@@ -24,7 +24,7 @@ namespace PhotoSi.UsersService.Features.CreateUser
             _publishEndpoint = publishEndpoint;
         }
 
-        public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var addressValid = await _addressChecker.IsAddressValidAsync(
                 new ShipmentAddress()
@@ -62,7 +62,9 @@ namespace PhotoSi.UsersService.Features.CreateUser
 
             if (_userRepository.Create(user))
             {
-                //I should send the event to an outbox
+                await _userRepository
+                    .SaveChangesAsync(cancellationToken);
+                //I should send the event to an outbox before saving the changes
                 await _publishEndpoint.Publish(
                     new UserCreatedEvent(
                         user.Id,
@@ -73,8 +75,7 @@ namespace PhotoSi.UsersService.Features.CreateUser
                         user.ShipmentAddress.Street,
                         user.ShipmentAddress.PostalCode
                     ), cancellationToken);
-                await _userRepository
-                    .SaveChangesAsync(cancellationToken);
+
                 return user.Id;
             }
             else
