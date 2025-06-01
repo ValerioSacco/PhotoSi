@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhotoSi.AddressBookService.Database;
-using System.Runtime.InteropServices;
 
 namespace PhotoSi.AddressBookService.Controllers
 {
@@ -17,28 +16,56 @@ namespace PhotoSi.AddressBookService.Controllers
 
         [HttpGet("/addresses/{country}/{city}/{postalCode}/{street}", Name = "Find address on address book by postal code and street")]
         public async Task<IActionResult> Get(
-            CancellationToken cancellationToken, 
+            CancellationToken cancellationToken,
             string country,
             string city,
-            string postalCode, 
+            string postalCode,
             string street
         )
         {
             var address = await _dbContext.Addresses
                 .FirstOrDefaultAsync(
-                    a => a.Country == country && 
-                    a.City == city && 
-                    a.PostalCode == postalCode && 
+                    a => a.Country == country &&
+                    a.City == city &&
+                    a.PostalCode == postalCode &&
                     a.Street == street,
                     cancellationToken
                 );
 
-            if(address is null)
+            if (address is null)
             {
                 return NotFound();
             }
 
             return Ok(address);
         }
+
+
+        [HttpGet("/addresses", Name = "List all addresses in address book")]
+        public async Task<IActionResult> List(
+            CancellationToken cancellationToken,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10
+        )
+        {
+            var totalCount = await _dbContext.Addresses
+                .CountAsync(cancellationToken);
+
+            var addresses = await _dbContext.Addresses
+                .AsNoTracking()
+                .OrderBy(a => a.Country).ThenBy(a => a.City)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return Ok(new
+            {
+                totalCount,
+                pageNumber,
+                pageSize,
+                addresses
+            });
+        }
+
     }
 }
