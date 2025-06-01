@@ -11,7 +11,7 @@ using PhotoSi.AddressBookService.Database;
 namespace PhotoSi.AddressBookService.Database.Migrations
 {
     [DbContext(typeof(AddressBookDbContext))]
-    [Migration("20250530090511_Create_Database")]
+    [Migration("20250601132326_Create_Database")]
     partial class Create_Database
     {
         /// <inheritdoc />
@@ -45,9 +45,6 @@ namespace PhotoSi.AddressBookService.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PostalCode", "Street")
@@ -63,8 +60,7 @@ namespace PhotoSi.AddressBookService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "00100",
-                            Street = "Via Roma 1",
-                            Version = 1
+                            Street = "Via Roma 1"
                         },
                         new
                         {
@@ -73,8 +69,7 @@ namespace PhotoSi.AddressBookService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "20100",
-                            Street = "Via Milano 2",
-                            Version = 1
+                            Street = "Via Milano 2"
                         },
                         new
                         {
@@ -83,8 +78,7 @@ namespace PhotoSi.AddressBookService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "80100",
-                            Street = "Via Napoli 3",
-                            Version = 1
+                            Street = "Via Napoli 3"
                         },
                         new
                         {
@@ -93,8 +87,7 @@ namespace PhotoSi.AddressBookService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "50100",
-                            Street = "Via Bologna 4",
-                            Version = 1
+                            Street = "Via Bologna 4"
                         },
                         new
                         {
@@ -103,8 +96,7 @@ namespace PhotoSi.AddressBookService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "40100",
-                            Street = "Via Torino 5",
-                            Version = 1
+                            Street = "Via Torino 5"
                         },
                         new
                         {
@@ -113,8 +105,7 @@ namespace PhotoSi.AddressBookService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "90100",
-                            Street = "Via Genova 6",
-                            Version = 1
+                            Street = "Via Genova 6"
                         });
                 });
 #pragma warning restore 612, 618

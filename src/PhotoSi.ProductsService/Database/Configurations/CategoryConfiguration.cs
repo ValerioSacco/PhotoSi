@@ -22,11 +22,7 @@ namespace PhotoSi.ProductsService.Database.Configurations
                 .IsRequired()
                 .HasMaxLength(200);
 
-            //builder.Property(p => p.Version)
-            //    .IsConcurrencyToken();
-
             builder.HasMany(c => c.Products);
-
 
             builder.HasData
             (
@@ -49,6 +45,20 @@ namespace PhotoSi.ProductsService.Database.Configurations
                     Id = Guid.Parse("1c3e24c8-b0c5-4c9b-8b28-f5c5ec2c819a"),
                     Name = "Biglietti",
                     Description = "Biglietti auguri per ricorrenze",
+                    CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new Category
+                {
+                    Id = Guid.Parse("c4e56760-ad5d-4f64-b795-41fb38e32533"),
+                    Name = "Calendari",
+                    Description = "Calendari personalizzati",
+                    CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new Category
+                {
+                    Id = Guid.Parse("a6f00d5a-d774-4f5b-b1bb-4cefec0a580e"),
+                    Name = "Poster",
+                    Description = "Poster di alta qualità",
                     CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             );

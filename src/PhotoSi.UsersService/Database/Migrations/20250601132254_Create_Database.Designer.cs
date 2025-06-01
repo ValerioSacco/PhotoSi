@@ -11,7 +11,7 @@ using PhotoSi.UsersService.Database;
 namespace PhotoSi.UsersService.Database.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20250530095653_Create_Database")]
+    [Migration("20250601132254_Create_Database")]
     partial class Create_Database
     {
         /// <inheritdoc />
@@ -45,9 +45,6 @@ namespace PhotoSi.UsersService.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.ToTable("ShipmentAddresses", (string)null);
@@ -60,8 +57,7 @@ namespace PhotoSi.UsersService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "00100",
-                            Street = "Via Roma 1",
-                            Version = 1
+                            Street = "Via Roma 1"
                         },
                         new
                         {
@@ -70,8 +66,7 @@ namespace PhotoSi.UsersService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "20100",
-                            Street = "Via Milano 2",
-                            Version = 1
+                            Street = "Via Milano 2"
                         },
                         new
                         {
@@ -80,8 +75,7 @@ namespace PhotoSi.UsersService.Database.Migrations
                             Country = "Italia",
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             PostalCode = "80100",
-                            Street = "Via Napoli 3",
-                            Version = 1
+                            Street = "Via Napoli 3"
                         });
                 });
 
@@ -125,9 +119,6 @@ namespace PhotoSi.UsersService.Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ShipmentAddressId")
@@ -146,8 +137,7 @@ namespace PhotoSi.UsersService.Database.Migrations
                             PhoneNumber = "+391234567890",
                             ProfilePictureUrl = "https://example.com/images/user01.jpg",
                             ShipmentAddressId = new Guid("f2b51297-7948-4816-98da-e8502aba672e"),
-                            UserName = "User01",
-                            Version = 1
+                            UserName = "User01"
                         },
                         new
                         {
@@ -159,8 +149,7 @@ namespace PhotoSi.UsersService.Database.Migrations
                             PhoneNumber = "+391234567891",
                             ProfilePictureUrl = "https://example.com/images/user02.jpg",
                             ShipmentAddressId = new Guid("e1d0862b-d5f8-426a-af8d-a05f03d3ea65"),
-                            UserName = "User02",
-                            Version = 1
+                            UserName = "User02"
                         },
                         new
                         {
@@ -172,8 +161,7 @@ namespace PhotoSi.UsersService.Database.Migrations
                             PhoneNumber = "+391234567892",
                             ProfilePictureUrl = "https://example.com/images/user03.jpg",
                             ShipmentAddressId = new Guid("ad7ff260-682e-407e-86e5-e03891f100a4"),
-                            UserName = "User03",
-                            Version = 1
+                            UserName = "User03"
                         });
                 });
 
