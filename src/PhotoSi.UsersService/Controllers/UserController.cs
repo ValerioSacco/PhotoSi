@@ -41,5 +41,20 @@ namespace PhotoSi.UsersService.Controllers
                 new { userId = userId }
             );
         }
+
+        [HttpPut("/users/{id}", Name = "Update one user")]
+        public async Task<IActionResult> Update(
+            CancellationToken cancellationToken,
+            Guid id,
+            [FromBody] UpdateUserCommand command
+        )
+        {
+            var userId = await _mediator.Send(command with { id = id}, cancellationToken);
+            return AcceptedAtRoute(
+                "Get one user by id",
+                new { id = userId },
+                new { userId = userId }
+            );
+        }
     }
 }
