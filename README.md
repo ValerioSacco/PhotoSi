@@ -18,7 +18,7 @@ The Products Service manages the product catalog, allowing for CRUD operations o
 It also sends events to the Orders Service when a product is created, updated, or deleted, allowing the Orders Service to keep its product data in sync.
 
 ### Address Book Service
-The service expose only GET endpoints to retrive the list of available shipment addresses and the details of a specific address. It is used by the Users Service to validate the shipment address associated to a user when the user is modified.<br>
+The service expose only GET endpoints to retrieve the list of available shipment addresses and the details of a specific address. It is used by the Users Service to validate the shipment address associated to a user when the user is modified.<br>
 
 ### Gateway Service
 The interaction with the system is centralized using a gateway service, built with Yarp, which exposes a single entry point for all client requests. It exposes also the Swagger UI for each service, allowing users to interact with the APIs.
@@ -67,14 +67,22 @@ The interaction with the system is centralized using a gateway service, built wi
 
    To start the services run the script for your operating system, in the root directory of the project.<br>
 
-   Is it also possibile to run each service individually by navigating to the service directory and running the following command:
+   Is it also possible to run each service individually by navigating to the service directory and running the following command:
 
    ```sh
-   dotnet run --
+   dotnet run --project src/PhotoSi.UsersService/PhotoSi.UsersService.csproj
+   dotnet run --project src/PhotoSi.OrdersService/PhotoSi.OrdersService.csproj
+   dotnet run --project src/PhotoSi.ProductsService/PhotoSi.ProductsService.csproj
+   dotnet run --project src/PhotoSi.AddressBookService/PhotoSi.AddressBookService.csproj
+   dotnet run --project src/PhotoSi.Gateway/PhotoSi.Gateway.csproj
+   ```
 
-
+   The services will start on different ports, as defined in the `appsettings.Development.json` files of each service. The gateway service will be available at `http://localhost:8080` by default, and it will route requests to the appropriate service based on the URL path.<br>
    At the start of each services the migrations on the databases are applied automatically, creating the necessary tables and seeding the databases with some initial data.<br>
 
 
 5. **Access the APIs**
-   By default, Swagger UI is enabled in development mode for each service at `http://localhost:<port>/swagger`.
+   To access the APIs navigate to `http://localhost:8080/swagger` in your web browser. This will open the Swagger UI, where you can interact with the APIs of each service, choosing the service in the top-right dropdown. If you don't see all the services available try refreshing the browser cache with Ctrl+F5.<br>
+   For each endpoint a brief description is provided, along with the request and response models. You can also test the endpoints directly from the Swagger UI by clicking on the "Try it out" button.<br>
+
+![Swagger docs](assets/swagger.png)
