@@ -80,7 +80,7 @@ The interaction with the system is centralized using a gateway service, built wi
    The services will start on different ports, as defined in the `appsettings.Development.json` files of each service. The gateway service will be available at `http://localhost:8080` by default, and it will route requests to the appropriate service based on the URL path.<br>
    At the start of each services the migrations on the databases are applied automatically, creating the necessary tables and seeding the databases with some initial data.<br>
 
-   The services are set to run on the flowwing ports, make sure that the ports are avilable on your machine:
+   The services are set to run on the following ports, make sure that the ports are available on your machine [killing any process that is using them](https://dev.to/osalumense/how-to-kill-a-process-occupying-a-port-on-windows-macos-and-linux-gj8):
    | Service Name          | Port  |
    |-----------------------|-------|
    | Address Book Service  | 6781  |
