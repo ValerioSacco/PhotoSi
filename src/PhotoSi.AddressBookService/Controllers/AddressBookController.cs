@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhotoSi.AddressBookService.Database;
 using PhotoSi.AddressBookService.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace PhotoSi.AddressBookService.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     public class AddressBookController : ControllerBase
     {
         private readonly AddressBookDbContext _dbContext;
@@ -15,6 +17,9 @@ namespace PhotoSi.AddressBookService.Controllers
             _dbContext = dbContext;
         }
 
+        [SwaggerOperation(Summary = "Get address identified by country-city-postalcode-street combination", Description = "Retrieves the details of an address specifying its details.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Returns the address details", typeof(Address))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Address does not exists")]
         [HttpGet("/addresses/{country}/{city}/{postalCode}/{street}", Name = "Find address on address book by postal code and street")]
         public async Task<IActionResult> Get(
             CancellationToken cancellationToken,
@@ -41,7 +46,8 @@ namespace PhotoSi.AddressBookService.Controllers
             return Ok(address);
         }
 
-
+        [SwaggerOperation(Summary = "Get list of all addresses", Description = "Retrieves the list of addresses with pagination")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Returns the address details", typeof(ListAddressesResponse))]
         [HttpGet("/addresses", Name = "List all addresses in address book")]
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,

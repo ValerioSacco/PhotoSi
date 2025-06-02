@@ -11,7 +11,10 @@ builder.Services.AddRepositories();
 builder.Services.AddFeatureServices();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(opt =>
+{
+    opt.EnableAnnotations();
+});
 
 builder.Services.AddMassTransit(opt =>
 {
