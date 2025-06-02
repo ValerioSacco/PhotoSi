@@ -37,7 +37,7 @@ namespace PhotoSi.UsersService.Features.ListUsers
                     u.Email,
                     u.PhoneNumber,
                     u.ProfilePictureUrl,
-                    new GetShipmentAddressResponse
+                    new ListShipmentAddressResponse
                     (
                         u.ShipmentAddress?.Country ?? string.Empty,
                         u.ShipmentAddress?.City ?? string.Empty,

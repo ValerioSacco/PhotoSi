@@ -21,8 +21,8 @@ namespace PhotoSi.UsersService.Controllers
         }
 
         [SwaggerOperation(Summary = "Get user by id", Description = "Retrieves the details of an user given its unique id.")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Returns the product details", typeof(GetUserResponse))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, "Product does not exists")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Returns the user details", typeof(GetUserResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "User does not exists")]
         [HttpGet("/users/{id}", Name = "Get one user by id")]
         public async Task<IActionResult> GetById(
             CancellationToken cancellationToken,
@@ -34,7 +34,7 @@ namespace PhotoSi.UsersService.Controllers
         }
 
         [SwaggerOperation(Summary = "Get list of users", Description = "Retrieves the list of users with pagination")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Returns the product details", typeof(ListUsersResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, "Returns the user details", typeof(ListUsersResponse))]
         [HttpGet("/users", Name = "List all users")]
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,

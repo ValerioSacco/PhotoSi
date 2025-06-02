@@ -1,6 +1,6 @@
 ﻿namespace PhotoSi.UsersService.Features.ListUsers
 {
-    public record GetShipmentAddressResponse(
+    public record ListShipmentAddressResponse(
         string country,
         string city,
         string street,
@@ -15,7 +15,7 @@
         string email,
         string? phoneNumber,
         string? profilePictureUrl,
-        GetShipmentAddressResponse shipmentAddress
+        ListShipmentAddressResponse shipmentAddress
     );
 
     public record ListUsersResponse(

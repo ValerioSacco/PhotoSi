@@ -14,6 +14,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddMassTransit(opt =>
 {
     opt.SetKebabCaseEndpointNameFormatter();
@@ -35,6 +45,7 @@ builder.Services.AddMassTransit(opt =>
 var app = builder.Build();
 
 app.ApplyMigrations();
+app.UseCors();
 
 if (app.Environment.IsDevelopment())
 {
