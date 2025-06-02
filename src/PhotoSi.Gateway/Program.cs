@@ -15,11 +15,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(opt =>
-    { 
-        opt.SwaggerEndpoint("http://localhost:5001/swagger/v1/swagger.json", "AddressBook Service");
-        opt.SwaggerEndpoint("http://localhost:5002/swagger/v1/swagger.json", "Users Service");
-        opt.SwaggerEndpoint("http://localhost:5003/swagger/v1/swagger.json", "Products Service");
-        opt.SwaggerEndpoint("http://localhost:5004/swagger/v1/swagger.json", "Orders Service");
+    {
+        opt.SwaggerEndpoint("http://localhost:6781/swagger/v1/swagger.json", "AddressBook Service");
+        opt.SwaggerEndpoint("http://localhost:6782/swagger/v1/swagger.json", "Users Service");
+        opt.SwaggerEndpoint("http://localhost:6783/swagger/v1/swagger.json", "Products Service");
+        opt.SwaggerEndpoint("http://localhost:6784/swagger/v1/swagger.json", "Orders Service");
     });
 }
 
