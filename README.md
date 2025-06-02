@@ -63,17 +63,17 @@ The interaction with the system is centralized using a gateway service, built wi
    ```
 
 3. **Run the project**
-   In the root directory there are two scripts run-projects.ps1 and run-projects.sh that can be used to run the services in development mode. These scripts will start each service in a separate terminal window, allowing you to see the logs and interact with the services.<br>
+   In the root directory there are two scripts run-projects.ps1 and run-projects.sh that can be used to run the services in development mode. These scripts will start each service in a separate terminal window, allowing you to see the logs and interact with the services. Make sure to have all the rights to run external scripts on your machine.<br>
 
    To start the services run the script for your operating system, in the root directory of the project.<br>
 
    Is it also possible to run each service individually by navigating to the service directory and running the following command:
 
    ```sh
-   dotnet run --project src/PhotoSi.UsersService/PhotoSi.UsersService.csproj
-   dotnet run --project src/PhotoSi.OrdersService/PhotoSi.OrdersService.csproj
-   dotnet run --project src/PhotoSi.ProductsService/PhotoSi.ProductsService.csproj
-   dotnet run --project src/PhotoSi.AddressBookService/PhotoSi.AddressBookService.csproj
+   dotnet run --project src/PhotoSi.UsersService/PhotoSi.UsersService.csproj &
+   dotnet run --project src/PhotoSi.OrdersService/PhotoSi.OrdersService.csproj &
+   dotnet run --project src/PhotoSi.ProductsService/PhotoSi.ProductsService.csproj &
+   dotnet run --project src/PhotoSi.AddressBookService/PhotoSi.AddressBookService.csproj &
    dotnet run --project src/PhotoSi.Gateway/PhotoSi.Gateway.csproj
    ```
 
