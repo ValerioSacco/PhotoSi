@@ -80,9 +80,19 @@ The interaction with the system is centralized using a gateway service, built wi
    The services will start on different ports, as defined in the `appsettings.Development.json` files of each service. The gateway service will be available at `http://localhost:8080` by default, and it will route requests to the appropriate service based on the URL path.<br>
    At the start of each services the migrations on the databases are applied automatically, creating the necessary tables and seeding the databases with some initial data.<br>
 
+   The services are set to run on the flowwing ports, make sure that the ports are avilable on your machine:
+   | Service Name          | Port  |
+   |-----------------------|-------|
+   | Address Book Service  | 6781  |
+   | Users Service         | 6782  |
+   | Products Service      | 6783  |
+   | Orders Service        | 6784  |
+   | Gateway               | 8080  |
+
 
 5. **Access the APIs**
    To access the APIs navigate to `http://localhost:8080/swagger` in your web browser. This will open the Swagger UI, where you can interact with the APIs of each service, choosing the service in the top-right dropdown. If you don't see all the services available try refreshing the browser cache with Ctrl+F5.<br>
    For each endpoint a brief description is provided, along with the request and response models. You can also test the endpoints directly from the Swagger UI by clicking on the "Try it out" button.<br>
 
 ![Swagger docs](assets/swagger.png)
+
