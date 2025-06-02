@@ -23,15 +23,41 @@ The service expose only GET endpoints to retrive the list of available shipment 
 
 ## How to run
 
-1. **Clone the repository**
-   ```sh
-   git clone https://github.com/your-username/PhotoSi.git
-   cd PhotoSi
-   ```
+1. **Prerequisites**<br>
+   In order to run the project, you need to have the following installed on your machine:
+   - [.NET SDK 8.0 or later](https://dotnet.microsoft.com/download)
+   - [Docker](https://www.docker.com/get-started)
 
-2. **Build the solution**
+   Check that you have the .NET8 SDK installed by running:
+   ```sh
+   dotnet --list-sdks
+   ```
+   Check that you have Docker installed and running by executing:
+   ```sh
+   docker -v
+   ```
+   Docker is needed to run run the rabbit MQ container which enables the communication between services.
+
+2. **Run RabbitMQ container locally**<br>
+   Open a terminal and run the following command to start a RabbitMQ container with the management plugin enabled:
+   ```sh
+   docker run -d --name photosi.rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=photosi -e RABBITMQ_DEFAULT_PASS=photosi rabbitmq:3-management
+   ```
+   If you don't already have the docker image locally available, the command will download it from the Docker Hub and it could take a few minutes.<br>
+   Check that the RabbitMQ container is running by executing:
+   ```sh
+   docker ps
+   ```
+   The result should be like this:
+   
+![RabbitMQ container running](assets/docker-check.png)
+
+2. **Test and Build the solution**
+   Open a terminal on the root directory of the project, which contains the `PhotoSi.sln` file, and run the following command to build and test the solution:
+
    ```sh
    dotnet build PhotoSi.sln
+   dotnet test PhotoSi.sln
    ```
 
 3. **Apply database migrations**
