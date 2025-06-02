@@ -19,7 +19,7 @@ namespace PhotoSi.UsersService.Repositories
 
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public UserRepository(UsersDbContext dbContext) 
+        public UserRepository(UsersDbContext dbContext)
             : base(dbContext)
         {
         }
@@ -30,7 +30,6 @@ namespace PhotoSi.UsersService.Repositories
         )
         {
             var user = await _dbSet
-                .AsNoTracking()
                 .Include(u => u.ShipmentAddress)
                 .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 

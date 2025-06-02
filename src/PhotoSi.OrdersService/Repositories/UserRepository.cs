@@ -21,10 +21,9 @@ namespace PhotoSi.OrdersService.Repositories
         {
         }
 
-        public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public override async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var user = await _dbSet
-                .AsNoTracking()
                 .Where(u => u.IsAvailable)
                 .Include(u => u.Address)
                 .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);

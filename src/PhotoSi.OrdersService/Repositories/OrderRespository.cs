@@ -24,12 +24,11 @@ namespace PhotoSi.OrdersService.Repositories
         }
 
         public override async Task<Order?> GetByIdAsync(
-            Guid id, 
+            Guid id,
             CancellationToken cancellationToken
         )
         {
             var order = await _dbSet
-                .AsNoTracking()
                 .Include(o => o.OrderLines)
                 .ThenInclude(ol => ol.Product)
                 .Include(o => o.User)

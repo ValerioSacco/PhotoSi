@@ -14,18 +14,17 @@ namespace PhotoSi.ProductsService.Repositories
 
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(ProductsDbContext dbContext) 
+        public CategoryRepository(ProductsDbContext dbContext)
             : base(dbContext)
         {
         }
 
         public override async Task<Category?> GetByIdAsync(
-            Guid id, 
+            Guid id,
             CancellationToken cancellationToken
         )
         {
             var category = await _dbSet
-                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
             return category;

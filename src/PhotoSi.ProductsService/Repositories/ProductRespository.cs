@@ -25,12 +25,11 @@ namespace PhotoSi.ProductsService.Repositories
         }
 
         public override async Task<Product?> GetByIdAsync(
-            Guid id, 
+            Guid id,
             CancellationToken cancellationToken
         )
         {
             var product = await _dbSet
-                .AsNoTracking()
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 

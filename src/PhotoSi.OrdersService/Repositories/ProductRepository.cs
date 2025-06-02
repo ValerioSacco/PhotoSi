@@ -23,7 +23,6 @@ namespace PhotoSi.OrdersService.Repositories
         public override async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var product = await _dbSet
-                .AsNoTracking()
                 .Where(u => u.IsAvailable)
                 .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
