@@ -6,7 +6,6 @@ Each service owns its own SqlLite database and the data is persisted using Entit
 
 Here's a brief overview of the services:
 ### Orders Service
-
 The Orders Service is responsible for managing orders, including creating, updating, and retrieving orders. It receives from the products service and users service the events related to the product and users CRUD operations and stores the data in its own database.<br>
 The service enables the user to get the list of orders, get a specific order by ID, create a new order, update the existing order lines of a given order, and delete an order. For each operation the system checks the validity of the user and product associated to the order, ensuring that the user exists and the product is available in the catalog..<br>
 
@@ -20,6 +19,9 @@ It also sends events to the Orders Service when a product is created, updated, o
 
 ### Address Book Service
 The service expose only GET endpoints to retrive the list of available shipment addresses and the details of a specific address. It is used by the Users Service to validate the shipment address associated to a user when the user is modified.<br>
+
+### Gateway Service
+The interaction with the system is centralized using a gateway service, built with Yarp, which exposes a single entry point for all client requests. It exposes also the Swagger UI for each service, allowing users to interact with the APIs.
 
 ## How to run
 
@@ -56,23 +58,23 @@ The service expose only GET endpoints to retrive the list of available shipment 
    Open a terminal on the root directory of the project, which contains the `PhotoSi.sln` file, and run the following command to build and test the solution:
 
    ```sh
-   dotnet build PhotoSi.sln
-   dotnet test PhotoSi.sln
+   dotnet build
+   dotnet test
    ```
 
-3. **Apply database migrations**
-   Each service applies migrations automatically on startup.
+3. **Run the project**
+   In the root directory there are two scripts run-projects.ps1 and run-projects.sh that can be used to run the services in development mode. These scripts will start each service in a separate terminal window, allowing you to see the logs and interact with the services.<br>
 
-4. **Run the services**
-   You can run each service individually:
+   To start the services run the script for your operating system, in the root directory of the project.<br>
+
+   Is it also possibile to run each service individually by navigating to the service directory and running the following command:
+
    ```sh
-   dotnet run --project src/PhotoSi.UsersService/PhotoSi.UsersService.csproj
-   dotnet run --project src/PhotoSi.OrdersService/PhotoSi.OrdersService.csproj
-   dotnet run --project src/PhotoSi.ProductsService/PhotoSi.ProductsService.csproj
-   dotnet run --project src/PhotoSi.AddressBookService/PhotoSi.AddressBookService.csproj
-   ```
+   dotnet run --
 
-   Or use Docker Compose if available.
+
+   At the start of each services the migrations on the databases are applied automatically, creating the necessary tables and seeding the databases with some initial data.<br>
+
 
 5. **Access the APIs**
    By default, Swagger UI is enabled in development mode for each service at `http://localhost:<port>/swagger`.
